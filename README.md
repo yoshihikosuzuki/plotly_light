@@ -29,4 +29,50 @@ $ python setup.py install
 ```python
 import plotly_light as pl
 
+# Generate a histgram trace
+trace = pl.make_histogram([1, 2, 3, 2], bin_size=1)
+
+# Make a custom layout
+layout = pl.make_layout(x_title="x", y_title="y", x_range=(0, 10))
 ```
+
+If you are running inside Jupyter, you can plot as follows:
+
+```python
+# Draw the histogram with a default layout
+pl.show_plot(trace)
+
+# Or you can make a custom layout
+pl.show_plot(trace, layout)
+```
+
+## List of functions
+
+Every instance `XXX` below can be called as `pl.XXX`. For details, read the docstring of each function.
+
+### Traces
+
+- `make_hist`
+  - Lightweight histogram using a barplot instead of histogram.
+- `make_scatter`
+  - Easy-to-use, but the return object is currently as large as that of Plotly.
+- `make_lines`
+  - For the "lines" mode of the scatter plot with multiple types of widths and/or colors.
+  - More efficient in terms of data size than using shapes.
+
+### Shapes
+
+- `make_line`
+  - Utility for generating a line shape object.
+- `make_rect`
+  - Utility for generating a rectangle shape object.
+
+### Layout
+
+- `make_layout`
+  - Utility for generating a layout object.
+
+### Drawing a plot
+
+- `show_plot`
+  - Utility for drawing a plot.

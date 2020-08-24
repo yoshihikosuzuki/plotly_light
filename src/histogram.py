@@ -52,7 +52,8 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
         end = max(data)
     if bin_size is not None:
         bin_num = -int(-(end - start + bin_size) // bin_size)
-    bin_size = (end - start + bin_size) / bin_num
+    else:
+        bin_size = (end - start) / bin_num
     counts, bin_edges = np.histogram(data,
                                      range=(start - bin_size / 2,
                                             end + bin_size / 2),
