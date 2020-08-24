@@ -1,0 +1,6 @@
+from .show import show_plot
+from .layout import make_layout
+from .histogram import make_hist
+from .scatter import make_scatter
+from .line import make_line, make_lines
+from .rectangle import make_rect
