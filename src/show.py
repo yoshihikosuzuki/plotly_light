@@ -4,11 +4,11 @@ from plotly.basedatatypes import BaseTraceType
 from .layout import make_layout
 
 
-def show_plot(traces: Union[BaseTraceType, List[BaseTraceType]],
-              layout: Optional[go.Layout] = None,
-              download_as: str = "svg",
-              out_html: Optional[str] = None,
-              embed_plotlyjs: bool = True):
+def show(traces: Union[BaseTraceType, List[BaseTraceType]],
+         layout: Optional[go.Layout] = None,
+         download_as: str = "svg",
+         out_html: Optional[str] = None,
+         embed_plotlyjs: bool = True):
     """Plot a figure in Jupyter Notebook.
 
     positional arguments:
