@@ -11,6 +11,7 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
               bin_size: Optional[int] = None,
               bin_num: int = 10,
               col: Optional[str] = None,
+              opacity: float = 1,
               name: Optional[str] = None,
               show_legend: bool = False,
               use_histogram: bool = False) -> Union[go.Bar, go.Histogram]:
@@ -37,6 +38,7 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                                        end=end,
                                        size=bin_size),
                             marker=dict(color=col),
+                            opacity=opacity,
                             name=name,
                             showlegend=show_legend)
     # Non-numerical, categorical data
@@ -46,6 +48,7 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                                  zip(*counter.items()))),
                       width=bin_size,
                       marker_color=col,
+                      opacity=opacity,
                       name=name,
                       showlegend=show_legend)
     # Numerical data
@@ -66,5 +69,6 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                   y=counts,
                   width=bin_size,
                   marker_color=col,
+                  opacity=opacity,
                   name=name,
                   showlegend=show_legend)

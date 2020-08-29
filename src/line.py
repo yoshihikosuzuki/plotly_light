@@ -4,6 +4,8 @@ from .scatter import make_scatter
 
 
 def make_line(x0: float, y0: float, x1: float, y1: float,
+              xref: str = "x",
+              yref: str = "y",
               width: float = 1,
               col: str = "black",
               layer: str = "above") -> Dict:
@@ -13,15 +15,21 @@ def make_line(x0: float, y0: float, x1: float, y1: float,
       @ [x|y][0|1] : A line is drawn from (x0, y0) to (x1, y1).
 
     optional arguments:
-      @ width : Line width.
-      @ col   : Line color.
-      @ layer : Drawing layer. Must be one of {'above', 'below'}.
+      @ [x|y]ref : Must be one of {'[x|y]', 'paper'}.
+                   If "paper", values of `[x|y]0,1` must be within [0, 1]
+                   and are interpreted as relative positions in the entire
+                   [x|y]-axis.
+      @ width    : Line width.
+      @ col      : Line color.
+      @ layer    : Drawing layer. Must be one of {'above', 'below'}.
     """
+    assert xref in ("x", "paper") and yref in ("y", "paper"), \
+        "`[x|y]ref` must be '[x|y]' or 'paper'"
     assert layer in ("above", "below"), \
         "`layer` must be one of {'above' or 'below'}"
     return dict(type="line",
-                xref="x",
-                yref="y",
+                xref=xref,
+                yref=yref,
                 x0=x0,
                 y0=y0,
                 x1=x1,

@@ -23,7 +23,7 @@ def make_layout(width: Optional[int] = None,
                 x_ticklabel: bool = True,
                 y_ticklabel: bool = True,
                 anchor_axes: bool = False,
-                margin: Dict = dict(l=10, r=10, t=50, b=10),
+                margin: Dict = dict(l=10, r=10, t=30, b=10),
                 shapes: Optional[List[Dict]] = None) -> go.Layout:
     """Create a simple Layout object.
 
