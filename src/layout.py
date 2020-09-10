@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, List, Dict
+from typing import Union, Optional, Tuple, List, Dict
 import plotly.graph_objects as go
 
 
@@ -86,3 +86,19 @@ def make_layout(width: Optional[int] = None,
         margin=margin,
         shapes=shapes,
         barmode=barmode)
+
+
+def merge_layout(layout1: Union[go.Layout, Dict],
+                 layout2: Union[go.Layout, Dict],
+                 overwrite: bool = True) -> go.Layout:
+    """Merge two layouts.
+    
+    positional arguments:
+      @ layout[1|2] : Layout object or dictionary.
+
+    optional arguments:
+      @ overwrite : If True, values of layout2 are used for shared keys.
+    """
+    return ((layout1 if isinstance(layout1, go.Layout)
+             else make_layout().update(layout1, overwrite=True))
+            .update(layout2, overwrite=overwrite))
