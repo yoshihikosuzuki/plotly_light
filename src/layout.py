@@ -24,7 +24,8 @@ def make_layout(width: Optional[int] = None,
                 y_ticklabel: bool = True,
                 anchor_axes: bool = False,
                 margin: Dict = dict(l=10, r=10, t=30, b=10),
-                shapes: Optional[List[Dict]] = None) -> go.Layout:
+                shapes: Optional[List[Dict]] = None,
+                barmode: Optional[str] = None) -> go.Layout:
     """Create a simple Layout object.
 
     optional arguments:
@@ -44,6 +45,7 @@ def make_layout(width: Optional[int] = None,
       @ margin          : Margin of the plot.
                           Default: `dict(l=80, r=80, t=100, b=80)`.
       @ shapes          : List of non-interactive shape objects.
+      @ barmode         : {"group" (default), "stack", "overlay", "relative"}.
     """
     return go.Layout(
         width=width,
@@ -82,4 +84,5 @@ def make_layout(width: Optional[int] = None,
                               size=font_size_legend,
                               color="black")),
         margin=margin,
-        shapes=shapes)
+        shapes=shapes,
+        barmode=barmode)
