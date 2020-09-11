@@ -1,4 +1,4 @@
-from .show import show
+from .show_plot import show
 from .layout import make_layout, merge_layout
 from .histogram import make_hist
 from .scatter import make_scatter

@@ -1,5 +1,6 @@
 from typing import Union, Optional, Sequence, Tuple
 import plotly.graph_objects as go
+from logzero import logger
 
 
 def make_scatter(x: Sequence,
