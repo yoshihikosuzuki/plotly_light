@@ -17,6 +17,7 @@ def show(traces: Union[BaseTraceType, List[BaseTraceType]],
     optional arguments:
       @ layout         : A layout object.
       @ download_as    : File format of the "Download plot" buttion in the plot.
+                         Must be one of {"png", "jpeg", "svg"}.
       @ out_html       : Output the plot to an html file.
       @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in `out_html`.
     """
