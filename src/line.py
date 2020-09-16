@@ -43,7 +43,8 @@ def make_lines(coords: List[Tuple[int, int, int, int]],
                width: float = 1,
                col: str = "black",
                name: Optional[str] = None,
-               show_legend: bool = False) -> List[go.Scatter]:
+               show_legend: bool = False,
+               use_webgl: bool = True) -> List[go.Scatter]:
     """A collection of lines with same width and color as a single trace.
     Use for lines with multiple types of width and/or color.
 
@@ -64,4 +65,5 @@ def make_lines(coords: List[Tuple[int, int, int, int]],
                         line_width=width,
                         col=col,
                         name=name,
-                        show_legend=show_legend)
+                        show_legend=show_legend,
+                        use_webgl=use_webgl)
