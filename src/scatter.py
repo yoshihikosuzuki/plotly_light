@@ -19,6 +19,7 @@ def make_scatter(x: Sequence,
                  show_scale: bool = True,
                  name: Optional[str] = None,
                  show_legend: bool = False,
+                 show_init: bool = True,
                  use_webgl: bool = True) -> go.Scatter:
     """Create a simple Trace object of a scatter plot.
 
@@ -43,6 +44,7 @@ def make_scatter(x: Sequence,
       @ show_scale    : Show a scale bar for `col_scale`.
       @ name          : Display name of the trace in legend.
       @ show_legend   : Show this trace in legend.
+      @ show_init     : Show this trace initially.
       @ use_webgl     : Use WebGL instead of SVG for speed.
     """
     assert len(x) == len(y), "`x` and `y` must have same size"
@@ -70,4 +72,5 @@ def make_scatter(x: Sequence,
         line=(None if mode == "markers" else
               dict(width=line_width,
                    color=col)),
-        showlegend=show_legend)
+        showlegend=show_legend,
+        visible=None if show_init else "legendonly")
