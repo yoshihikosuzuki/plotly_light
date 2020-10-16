@@ -1,6 +1,6 @@
-from .show_plot import show
-from .layout import make_layout, merge_layout
-from .histogram import make_hist
-from .scatter import make_scatter
-from .line import make_lines
-from .rectangle import make_rect
+from ._histogram import make_hist
+from ._scatter import make_scatter
+from ._line import make_lines
+from ._rectangle import make_rect
+from ._layout import make_layout, merge_layout
+from ._show import show, show_image
