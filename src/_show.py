@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.basedatatypes import BaseTraceType
 from skimage import io
-from .layout import make_layout
+from ._layout import make_layout
 
 
 def show(traces: Union[BaseTraceType, List[BaseTraceType]],
