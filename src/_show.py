@@ -6,7 +6,7 @@ from skimage import io
 from ._layout import make_layout
 
 
-def show(traces: Union[BaseTraceType, List[BaseTraceType]],
+def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
          layout: Optional[go.Layout] = None,
          download_as: str = "svg",
          out_html: Optional[str] = None,
@@ -14,7 +14,7 @@ def show(traces: Union[BaseTraceType, List[BaseTraceType]],
     """Plot a figure in Jupyter Notebook.
 
     positional arguments:
-      @ traces : A trace or list of traces.
+      @ traces : A trace, list of traces, or a Figure object.
 
     optional arguments:
       @ layout         : A layout object.
