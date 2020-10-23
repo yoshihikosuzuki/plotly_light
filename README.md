@@ -44,7 +44,9 @@ Every function named `XXX` can be called as `pl.XXX`, and in Jupyter Notebook, y
 
 <img src="assets/jupyter_completion.png" width="300">
 
-Below are short descriptions of each function by their type. For details, read the docstring of each function by e.g. running `pl.XXX?` in Jupyter Notebook.
+Below are short descriptions of each function by their type. For details, read the docstring of each function by e.g. running `pl.XXX?` in Jupyter Notebook. Below is an example with `pl.make_hist`:
+
+<img src="assets/function_help.png" width="500">
 
 ### Traces
 
