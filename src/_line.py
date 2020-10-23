@@ -1,6 +1,6 @@
 from typing import Union, Optional, Tuple, List, Dict
 import plotly.graph_objects as go
-from .scatter import make_scatter
+from ._scatter import make_scatter
 
 Coord = Tuple[int, int, int, int]
 
