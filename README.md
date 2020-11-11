@@ -68,6 +68,11 @@ Below are short descriptions of each function by their type. For details, read t
 - `make_layout`
   - Utility for a `go.Layout` object.
 
+### Figure
+
+- `make_figure`
+  - Wrapper of `go.Figure`.
+
 ### Drawing a plot
 
 - `show`
