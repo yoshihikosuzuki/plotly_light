@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.basedatatypes import BaseTraceType
 from skimage import io
-from ._layout import make_layout
+from ._layout import make_layout, merge_layout
 
 
 def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
@@ -25,8 +25,13 @@ def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
     """
     assert download_as in ("png", "jpeg", "svg"), \
         f"Unsupported output file type: {download_as}"
-    fig = go.Figure(data=traces,
-                    layout=layout if layout is not None else make_layout())
+    if isinstance(traces, go.Figure):
+        fig = traces
+        if layout is not None:
+            fig.layout = merge_layout(fig.layout, layout)
+    else:
+        fig = go.Figure(data=traces,
+                        layout=layout if layout is not None else make_layout())
     fig.show(config=dict(toImageButtonOptions=dict(format=download_as)))
     if out_html is not None:
         fig.write_html(file=out_html,
