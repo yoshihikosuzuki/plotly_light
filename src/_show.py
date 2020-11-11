@@ -1,17 +1,17 @@
 from typing import Union, Optional, List, Dict
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.basedatatypes import BaseTraceType
 from skimage import io
 from ._layout import make_layout, merge_layout
 from ._figure import make_figure
+from ._type import Traces
 
 
-def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
+def show(traces: Union[Traces, go.Figure],
          layout: Optional[go.Layout] = None,
          download_as: str = "svg",
          out_html: Optional[str] = None,
-         embed_plotlyjs: bool = True):
+         embed_plotlyjs: bool = True) -> None:
     """Plot a figure in Jupyter Notebook.
 
     positional arguments:
@@ -41,7 +41,7 @@ def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
 def show_image(fname: str,
                width: Optional[int] = None,
                height: Optional[int] = None,
-               margin: Dict = dict(l=0, r=0, t=0, b=0)):
+               margin: Dict = dict(l=0, r=0, t=0, b=0)) -> None:
     """Plot an image file in Jupyter Notebook.
 
     positional arguments:

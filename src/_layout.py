@@ -96,17 +96,19 @@ def make_layout(width: Optional[int] = None,
         barmode=barmode)
 
 
-def merge_layout(layout1: Union[go.Layout, Dict],
-                 layout2: Union[go.Layout, Dict],
+def merge_layout(layout1: Union[go.Layout, Dict, None],
+                 layout2: Union[go.Layout, Dict, None],
                  overwrite: bool = True) -> go.Layout:
     """Merge two layouts.
-    
+
     positional arguments:
       @ layout[1|2] : Layout object or dictionary.
 
     optional arguments:
       @ overwrite : If True, values of layout2 are used for shared keys.
     """
-    return ((layout1 if isinstance(layout1, go.Layout)
-             else make_layout().update(layout1, overwrite=True))
-            .update(layout2, overwrite=overwrite))
+    return (layout1 if layout2 is None
+            else layout2 if layout1 is None
+            else ((layout1 if isinstance(layout1, go.Layout)
+                   else make_layout().update(layout1, overwrite=True))
+                  .update(layout2, overwrite=overwrite)))

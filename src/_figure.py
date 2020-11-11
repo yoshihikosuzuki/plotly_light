@@ -1,11 +1,11 @@
 from typing import Union, Optional, List
 import plotly.graph_objects as go
-from plotly.basedatatypes import BaseTraceType
 from ._layout import make_layout
+from ._type import Traces
 
 
-def make_figure(traces: Union[BaseTraceType, List[BaseTraceType]],
-                layout: Optional[go.Layout] = None):
+def make_figure(traces: Traces,
+                layout: Optional[go.Layout] = None) -> go.Figure:
     """Same as go.Figure(), just for compatibility.
 
     positional arguments:
