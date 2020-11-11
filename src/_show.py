@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 from plotly.basedatatypes import BaseTraceType
 from skimage import io
 from ._layout import make_layout, merge_layout
+from ._figure import make_figure
 
 
 def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
@@ -30,8 +31,7 @@ def show(traces: Union[BaseTraceType, List[BaseTraceType], go.Figure],
         if layout is not None:
             fig.layout = merge_layout(fig.layout, layout)
     else:
-        fig = go.Figure(data=traces,
-                        layout=layout if layout is not None else make_layout())
+        fig = make_figure(traces, layout)
     fig.show(config=dict(toImageButtonOptions=dict(format=download_as)))
     if out_html is not None:
         fig.write_html(file=out_html,
