@@ -4,11 +4,12 @@ import plotly.graph_objects as go
 
 def make_layout(width: Optional[int] = None,
                 height: Optional[int] = None,
-                font: str = "Arial",
-                font_size_title: int = 20,
-                font_size_axis_title: int = 18,
-                font_size_axis_tick: int = 15,
-                font_size_legend: int = 15,
+                font: Optional[str] = None,
+                font_col: Optional[str] = None,
+                font_size_title: Optional[int] = None,
+                font_size_axis_title: Optional[int] = None,
+                font_size_axis_tick: Optional[int] = None,
+                font_size_legend: Optional[int] = None,
                 title: Optional[str] = None,
                 x_title: Optional[str] = None,
                 y_title: Optional[str] = None,
@@ -16,26 +17,28 @@ def make_layout(width: Optional[int] = None,
                 y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
                 x_dtick: Optional[int] = None,
                 y_dtick: Optional[int] = None,
-                x_logscale: bool = False,
-                y_logscale: bool = False,
-                x_grid: bool = True,
-                y_grid: bool = True,
-                x_zeroline: bool = True,
-                y_zeroline: bool = True,
-                x_reversed: bool = False,
-                y_reversed: bool = False,
-                x_ticklabel: bool = True,
-                y_ticklabel: bool = True,
-                anchor_axes: bool = False,
-                margin: Dict = dict(l=10, r=10, t=30, b=10),
+                x_logscale: Optional[bool] = None,
+                y_logscale: Optional[bool] = None,
+                x_grid: Optional[bool] = None,
+                y_grid: Optional[bool] = None,
+                x_zeroline: Optional[bool] = None,
+                y_zeroline: Optional[bool] = None,
+                x_reversed: Optional[bool] = None,
+                y_reversed: Optional[bool] = None,
+                x_ticklabel: Optional[bool] = None,
+                y_ticklabel: Optional[bool] = None,
+                anchor_axes: Optional[bool] = None,
+                margin: Optional[Dict] = None,
                 shapes: Optional[List[Dict]] = None,
-                barmode: Optional[str] = None) -> go.Layout:
-    """Create a simple Layout object.
+                barmode: Optional[str] = None,
+                hovermode: Optional[Union[str, bool]] = None) -> go.Layout:
+    """Create a minimal Layout object.
 
     optional arguments:
       @ width           : Width of the plot.
       @ height          : Height of the plot.
-      @ font            : Font of (axis) titles.
+      @ font            : Font of characters in the plots.
+      @ font_col        : Font color of charactoers in the plots.
       @ font_size_[title|axis_title|axis_tick|legend]
                         : Font size of title/x,y_title/x,y_tick/legend.
       @ title           : Title of the plot.
@@ -50,50 +53,56 @@ def make_layout(width: Optional[int] = None,
                           Default: `dict(l=80, r=80, t=100, b=80)`.
       @ shapes          : List of non-interactive shape objects.
       @ barmode         : {"group" (default), "stack", "overlay", "relative"}.
+      @ hovermode       : {"closest" (default), "[x|y] [unified]", False}.
     """
-    return go.Layout(
-        width=width,
-        height=height,
-        hovermode="closest",
-        title=dict(text=title,
-                   font=dict(family=font,
-                             size=font_size_title,
-                             color="black")),
-        xaxis=dict(title=dict(text=x_title,
-                              font=dict(family=font,
-                                        size=font_size_axis_title,
-                                        color="black")),
-                   tickfont=dict(family="Arial",
-                                 size=font_size_axis_tick,
-                                 color="black"),
-                   showgrid=x_grid,
-                   zeroline=x_zeroline,
-                   showticklabels=x_ticklabel,
-                   range=x_range,
-                   dtick=x_dtick,
-                   type="-" if not x_logscale else "log",
-                   autorange="reversed" if x_reversed else None),
-        yaxis=dict(title=dict(text=y_title,
-                              font=dict(family=font,
-                                        size=font_size_axis_title,
-                                        color="black")),
-                   tickfont=dict(family="Arial",
-                                 size=font_size_axis_tick,
-                                 color="black"),
-                   showgrid=y_grid,
-                   zeroline=y_zeroline,
-                   showticklabels=y_ticklabel,
-                   range=y_range,
-                   dtick=y_dtick,
-                   type="-" if not y_logscale else "log",
-                   autorange="reversed" if y_reversed else None,
-                   scaleanchor="x" if anchor_axes else None),
-        legend=dict(font=dict(family=font,
-                              size=font_size_legend,
-                              color="black")),
-        margin=margin,
-        shapes=shapes,
-        barmode=barmode)
+    layout = go.Layout(width=width,
+                       height=height,
+                       hovermode=hovermode,
+                       title=dict(text=title,
+                                  font=dict(family=font,
+                                            size=font_size_title,
+                                            color=font_col)),
+                       xaxis=dict(title=dict(text=x_title,
+                                             font=dict(family=font,
+                                                       size=font_size_axis_title,
+                                                       color=font_col)),
+                                  tickfont=dict(family=font,
+                                                size=font_size_axis_tick,
+                                                color=font_col),
+                                  showgrid=x_grid,
+                                  zeroline=x_zeroline,
+                                  showticklabels=x_ticklabel,
+                                  range=x_range,
+                                  dtick=x_dtick),
+                       yaxis=dict(title=dict(text=y_title,
+                                             font=dict(family=font,
+                                                       size=font_size_axis_title,
+                                                       color=font_col)),
+                                  tickfont=dict(family=font,
+                                                size=font_size_axis_tick,
+                                                color=font_col),
+                                  showgrid=y_grid,
+                                  zeroline=y_zeroline,
+                                  showticklabels=y_ticklabel,
+                                  range=y_range,
+                                  dtick=y_dtick),
+                       legend=dict(font=dict(family=font,
+                                             size=font_size_legend,
+                                             color=font_col)),
+                       margin=margin,
+                       shapes=shapes,
+                       barmode=barmode)
+    if x_logscale:
+        layout.xaxis.type = "log"
+    if x_reversed:
+        layout.xaxis.autorange = "reversed"
+    if y_logscale:
+        layout.yaxis.type = "log"
+    if y_reversed:
+        layout.yaxis.autorange = "reversed"
+    if anchor_axes:
+        layout.yaxis.scaleanchor = "x"
+    return layout
 
 
 def merge_layout(layout1: Union[go.Layout, Dict, None],
