@@ -1,4 +1,5 @@
 from typing import Union, Optional, List, Dict
+from IPython.display import Image, display
 import plotly.express as px
 import plotly.graph_objects as go
 from skimage import io
@@ -39,6 +40,7 @@ def show(traces: Union[Traces, go.Figure],
 
 
 def show_image(fname: str,
+               interactive: bool = False,
                width: Optional[int] = None,
                height: Optional[int] = None,
                margin: Dict = dict(l=0, r=0, t=0, b=0)) -> None:
@@ -48,17 +50,21 @@ def show_image(fname: str,
       @ fname : Name of the image file.
 
     optional arguments:
+      @ interactive : If True, plot an interective (but very large) plot.
       @ width  : Of the image.
       @ height : Of the image.
     """
-    fig = px.imshow(io.imread(fname))
-    fig.update_layout(width=width,
-                      height=height,
-                      xaxis=dict(showgrid=False,
-                                 zeroline=False,
-                                 showticklabels=False),
-                      yaxis=dict(showgrid=False,
-                                 zeroline=False,
-                                 showticklabels=False),
-                      margin=margin)
-    fig.show()
+    if not interactive:
+        display(Image(fname, width=width, height=height))
+    else:
+        fig = px.imshow(io.imread(fname))
+        fig.update_layout(width=width,
+                        height=height,
+                        xaxis=dict(showgrid=False,
+                                    zeroline=False,
+                                    showticklabels=False),
+                        yaxis=dict(showgrid=False,
+                                    zeroline=False,
+                                    showticklabels=False),
+                        margin=margin)
+        fig.show()
