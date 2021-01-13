@@ -1,16 +1,10 @@
-# plotly_light
+# Plotly Light
 
 A wrapper of Plotly Python aiming for lightweight plots and ease of use.
 
-## Why yet another wrapper?
-
-The major reason is: _to reduce plot data size_.
-
-Plotly officialy provides a utility wrapper named Plotly Express, and even without it, it is not so much difficult to write Plotly codes. However, the problem is the **embedded raw data** and the resulting **large data size** especially when you draw plots of large datasets. For example, when I draw a histogram, what I wish to see are essentially aggregated count values for each bin/label, but the histogram function of Plotly keeps all the raw data in the plot, which results in a heavy output file size and slow, painful interactive experience. I believe this behavior must come from Plotly's philosophy and do not wish to deny it, but I just want to have yet another wrapper simply for lightweight plots.
-
 ## Requirements
 
-- Python >= 3 ([CPython](https://github.com/python/cpython) is recommended)
+- Python >= 3.7 ([CPython](https://github.com/python/cpython) is recommended)
 
 ## How to install
 
@@ -22,25 +16,51 @@ $ python setup.py install
 
 ## How to use (in Jupyter Notebook)
 
+### Simple usage
+
 ```python
 import plotly_light as pl
 
-# Generate a histgram trace
-trace = pl.make_hist([1, 2, 3, 2], bin_size=1)
-
-# Draw the histogram with a default layout
+# Generate a histgram of many random numbers
+# NOTE: You can confirm the file size does not increase with a very large `k`.
+import random
+data = random.choices(list(range(10)), k=10000)
+trace = pl.make_hist(data, bin_size=1)
 pl.show(trace)
 
-# Or you can make a custom layout
-layout = pl.make_layout(x_title="x", y_title="y", x_range=(0, 10))
+# You can include the track with a custom name in the legend
+trace = pl.make_hist(data, bin_size=1, name="Random", show_legend=True)
+pl.show(trace)
 
-# And draw a plot with the custom layout
+# You can also use a custom layout
+layout = pl.make_layout(x_title="Number", y_title="Frequency", x_reversed=True)
 pl.show(trace, layout)
+```
+
+### Change the default theme, layout, and renderer
+
+PLotly Light's default theme is `plotly_white`, and its default renderer is `plotly_mimetype+notebook_connected` if the code is running in Jupyter or IPython and otherwise automatically determined by Plotly.
+
+```python
+pl.set_default_theme("ggplot2")
+pl.set_default_layout(your_favorite_layout_object)
+pl.set_default_renderer("iframe_connected")
+```
+
+Plotly Light's default layout is defined in `src/__init__.py` as follows:
+
+```python
+set_default_layout(make_layout(font="Arial",
+                               font_size_title=20,
+                               font_size_axis_title=18,
+                               font_size_axis_tick=15,
+                               font_size_legend=15,
+                               margin=dict(l=10, r=10, t=30, b=10)))
 ```
 
 ## List of functions
 
-Every function named `XXX` can be called as `pl.XXX`, and in Jupyter Notebook, you can see the list of available functions via completion by pressing `TAB` after typing `pl.` as follows:
+Every function/type named `XXX` offered by the package can be called as `pl.XXX`, and in Jupyter Notebook, you can see the list of available functions via completion by pressing `TAB` after typing `pl.` as follows:
 
 <img src="assets/jupyter_completion.png" width="300">
 
@@ -78,4 +98,10 @@ Below are short descriptions of each function by their type. For details, read t
 - `show`
   - Wrapper of `fig.show`.
 - `show_image`
-  - Load and show a (zoomable) image file.
+  - Load and show a (zoomable by default) image file.
+
+### Configuration (see `How to use` section above)
+
+- `set_default_theme`
+- `set_default_layout`
+- `set_default_renderer`
