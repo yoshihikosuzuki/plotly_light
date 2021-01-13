@@ -21,8 +21,8 @@ $ python setup.py install
 ```python
 import plotly_light as pl
 
-# Generate a histgram of many random numbers
-# NOTE: You can confirm the file size does not increase with a very large `k`.
+# Draw a histgram of many random numbers
+# NOTE: You can confirm the file size does not increase even with a very large `k`.
 import random
 data = random.choices(list(range(10)), k=10000)
 trace = pl.make_hist(data, bin_size=1)
@@ -39,18 +39,17 @@ pl.show(trace, layout)
 
 ### Change the default theme, layout, and renderer
 
-PLotly Light's default theme is `plotly_white`, and its default renderer is `plotly_mimetype+notebook_connected` if the code is running in Jupyter or IPython and otherwise automatically determined by Plotly.
-
 ```python
 pl.set_default_theme("ggplot2")
 pl.set_default_layout(your_favorite_layout_object)
 pl.set_default_renderer("iframe_connected")
 ```
 
-Plotly Light's default layout is defined in `src/__init__.py` as follows:
+PLotly Light's default theme is `plotly_white`, and its default renderer is `plotly_mimetype+notebook_connected` if the code is running in Jupyter or IPython and otherwise automatically determined by Plotly. Plotly Light's default layout is defined in `src/__init__.py` as follows:
 
 ```python
 set_default_layout(make_layout(font="Arial",
+                               font_col="black",
                                font_size_title=20,
                                font_size_axis_title=18,
                                font_size_axis_tick=15,

@@ -24,6 +24,7 @@ else:
 
 set_default_theme("plotly_white")
 set_default_layout(make_layout(font="Arial",
+                               font_col="black",
                                font_size_title=20,
                                font_size_axis_title=18,
                                font_size_axis_tick=15,
