@@ -4,6 +4,7 @@ import plotly.io as pio
 import plotly.graph_objects as go
 from ._layout import make_layout
 
+
 default_theme = pio.templates.default
 default_layout = None
 
@@ -54,14 +55,15 @@ def set_default_layout(layout: go.Layout) -> None:
     _set_default_template_with_layout()
 
 
+
 def set_default_renderer(renderer_name: str) -> None:
     """Set plotly's default renderer.
 
     positional_arguments:
       @ renderer_name : A plotly theme name like:
                          {"plotly_mimetype",
-                          "notebook[_connected]",
                           "browser",
+                          "notebook[_connected]",
                           "iframe[_connected]"}
     """
     pio.renderers.default = renderer_name

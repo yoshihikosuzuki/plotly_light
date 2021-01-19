@@ -3,6 +3,7 @@ from numbers import Number
 from collections import Counter
 import numpy as np
 import plotly.graph_objects as go
+from bits.util import RelCounter
 
 
 def make_hist(data: Union[Sequence, Mapping[Any, int]],
@@ -10,6 +11,7 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
               end: Optional[int] = None,
               bin_size: Optional[int] = None,
               bin_num: int = 10,
+              relative: bool = False,
               col: Optional[str] = None,
               opacity: float = 1,
               name: Optional[str] = None,
@@ -37,13 +39,16 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                             xbins=dict(start=start,
                                        end=end,
                                        size=bin_size),
+                            histnorm="percent" if relative else "",
                             marker=dict(color=col),
                             opacity=opacity,
                             name=name,
                             showlegend=show_legend)
-    # Non-numerical, categorical data
+    # Already a dictionary (counter), or non-numerical, categorical data
     if isinstance(data, Mapping) or not isinstance(next(iter(data)), Number):
-        counter = Counter(data) if isinstance(data, Sequence) else data
+        counter = RelCounter(data)
+        if relative:
+            counter = counter.relative()
         return go.Bar(**dict(zip(('x', 'y'),
                                  zip(*counter.items()))),
                       marker_color=col,
@@ -60,6 +65,8 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
     else:
         bin_size = (end - start) / bin_num
     counts, bin_edges = np.histogram(data,
+                                     weights=(np.ones(len(data))/float(len(data)) if relative
+                                              else None),
                                      range=(start - bin_size / 2,
                                             end + bin_size / 2),
                                      bins=bin_num)
