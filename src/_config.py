@@ -2,6 +2,7 @@ from typing import Optional
 from dataclasses import dataclass
 import plotly.io as pio
 import plotly.graph_objects as go
+from logzero import logger
 from ._layout import make_layout
 
 
@@ -42,6 +43,7 @@ def set_default_theme(theme_name: str,
     pio.templates.default = default_theme = theme_name
     if use_default_layout and default_layout is not None:
         _set_default_template_with_layout()
+    logger.info(f"Theme `{theme_name}` has been set.")
 
 
 def set_default_layout(layout: go.Layout) -> None:
@@ -53,7 +55,6 @@ def set_default_layout(layout: go.Layout) -> None:
     global default_layout
     default_layout = layout
     _set_default_template_with_layout()
-
 
 
 def set_default_renderer(renderer_name: str) -> None:
@@ -68,3 +69,4 @@ def set_default_renderer(renderer_name: str) -> None:
     """
     pio.renderers.default = renderer_name
     pio.renderers._activate_pending_renderers()
+    logger.info(f"Renderer `{renderer_name}` has been set.")

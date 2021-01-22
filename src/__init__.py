@@ -51,7 +51,12 @@ except Exception as e:
     print(e)
 else:
     _notebook_mode()
-    _set_custom_iframe_renderers()
+    try:
+        _set_custom_iframe_renderers()
+    except Exception as e:
+        pass
+    else:
+        set_default_renderer("iframe_connected")
 
 
 # Set Plotly Light's default theme/layout
@@ -64,4 +69,3 @@ set_default_layout(make_layout(font="Arial",
                                font_size_axis_tick=15,
                                font_size_legend=15,
                                margin=dict(l=10, r=10, t=30, b=10)))
-set_default_renderer("iframe_connected")
