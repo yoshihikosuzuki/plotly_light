@@ -16,7 +16,8 @@ def _notebook_mode() -> None:
 
 
 def _set_custom_iframe_renderers() -> None:
-    from os.path import basename
+    from os import getcwd
+    from os.path import basename, commonprefix, relpath
     import plotly.io as pio
     from plotly.io._base_renderers import IFrameRenderer
     from logzero import logger
@@ -28,10 +29,31 @@ def _set_custom_iframe_renderers() -> None:
         names of plots are unique and thus kept forever.
         """
 
+        def __init__(self,
+                     config=None,
+                     auto_play=False,
+                     post_script=None,
+                     animation_opts=None,
+                     include_plotlyjs=True,
+                     html_directory="iframe_figures"):
+            super().__init__(config,
+                             auto_play,
+                             post_script,
+                             animation_opts,
+                             include_plotlyjs,
+                             html_directory)
+            self.root_dir = getcwd()
+
         def build_filename(self):
-            out_fname = f"{self.html_directory}/{uuid4()}.html"
-            logger.debug(f"./{out_fname}")
-            return out_fname
+            self.out_fname = f"{self.html_directory}/{uuid4()}.html"
+            logger.debug(f"{self.out_fname}")
+            # NOTE: Always make a plot at the Notebook's directory
+            rel = relpath(commonprefix([self.root_dir, getcwd()]), getcwd())
+            return f"{rel}/{self.out_fname}"
+
+        def build_url(self, filename):
+            # NOTE: Path for iframe must be a relative path from the root dir
+            return self.out_fname
 
     nb_name = basename(ipynb_path.get())
     out_dir = f"{nb_name}.iframe_figures"
