@@ -45,4 +45,5 @@ set_default_theme("plotly_white")
 set_default_layout(make_layout(font="Arial",
                                font_col="black",
                                font_size=16,
+                               legend_border_col="black",
                                margin=dict(l=10, r=10, t=50, b=10)))

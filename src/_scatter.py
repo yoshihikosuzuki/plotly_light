@@ -22,6 +22,8 @@ def make_scatter(x: Sequence,
                  show_col_bar: bool = False,
                  col_bar_title: Optional[str] = None,
                  col_bar_ticks: Optional[Sequence[int]] = None,
+                 col_bar_x: Optional[float] = None,
+                 col_bar_y: Optional[float] = None,
                  name: Optional[str] = None,
                  show_legend: bool = False,
                  show_init: bool = True,
@@ -50,6 +52,8 @@ def make_scatter(x: Sequence,
       @ show_col_bar    : Show a color scale bar.
       @ col_bar_title   : Title text of the color scale bar.
       @ col_bar_ticks   : Tick values of the color scale bar.
+      @ col_bar_[x|y]   : Relative position of the color scale bar.
+                          (x, y) = (1.02, 0.5) by default.
       @ name            : Display name of the trace in legend.
       @ show_legend     : Show this trace in legend.
       @ show_init       : Show this trace initially.
@@ -85,7 +89,9 @@ def make_scatter(x: Sequence,
                      color=col,
                      colorbar=dict(title=col_bar_title,
                                    tickmode=None if col_bar_ticks is None else "array",
-                                   tickvals=col_bar_ticks),
+                                   tickvals=col_bar_ticks,
+                                   x=col_bar_x,
+                                   y=col_bar_y),
                      colorscale=col_scale,
                      reversescale=reverse_scale,
                      showscale=show_col_bar,

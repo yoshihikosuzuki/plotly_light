@@ -25,6 +25,10 @@ def make_layout(width: Optional[int] = None,
                 x_ticklabel: Optional[bool] = None,
                 y_ticklabel: Optional[bool] = None,
                 anchor_axes: Optional[bool] = None,
+                legend_x: Optional[float] = None,
+                legend_y: Optional[float] = None,
+                legend_border_col: Optional[str] = None,
+                legend_border_width: Optional[int] = None,
                 margin: Optional[Dict] = None,
                 shapes: Optional[List[Dict]] = None,
                 barmode: Optional[str] = None,
@@ -46,6 +50,10 @@ def make_layout(width: Optional[int] = None,
       @ [x|y]_reversed  : Reverse [x|y]-axis if True.
       @ [x|y]_ticklabel : Show tick labels of [x|y]-axis if True.
       @ anchor_axes     : Use same scale for both x/y axes.
+      @ legend_[x|y]    : Relative position of the legend.
+                          (x, y) = (1.02, 1) by default.
+      @ legend_border_[col|width]
+                        : Color/width for the borderlines of the legend box.
       @ margin          : Margin of the plot.
                           Default: `dict(l=80, r=80, t=100, b=80)`.
       @ shapes          : List of non-interactive shape objects.
@@ -72,6 +80,10 @@ def make_layout(width: Optional[int] = None,
                                   showticklabels=y_ticklabel,
                                   range=y_range,
                                   dtick=y_dtick),
+                       legend=dict(bordercolor=legend_border_col,
+                                   borderwidth=legend_border_width,
+                                   x=legend_x,
+                                   y=legend_y),
                        margin=margin,
                        shapes=shapes,
                        barmode=barmode)
