@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional, Dict
 from dataclasses import dataclass
 import plotly.io as pio
 import plotly.graph_objects as go
@@ -67,6 +67,19 @@ def set_default_renderer(renderer_name: str) -> None:
                           "notebook[_connected]",
                           "iframe[_connected]"}
     """
+    config = pio.renderers[pio.renderers.default.split('+')[0]].config
     pio.renderers.default = renderer_name
+    set_default_config(config)
     pio.renderers._activate_pending_renderers()
     logger.info(f"Renderer `{renderer_name}` has been set.")
+
+
+def set_default_config(config: Dict[Any, Any]) -> None:
+    """Set default config for `go.Figure.show()`. List of available configs is:
+
+    https://github.com/plotly/plotly.js/blob/master/src/plot_api/plot_config.js
+
+    positional_arguments:
+      @ config : Config keys and values.
+    """
+    pio.renderers[pio.renderers.default.split('+')[0]].config = config

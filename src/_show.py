@@ -22,7 +22,6 @@ def make_figure(traces: Traces,
 
 def show(traces: Union[Traces, go.Figure],
          layout: Optional[go.Layout] = None,
-         download_as: str = "svg",
          out_image: Optional[str] = None,
          out_html: Optional[str] = None,
          embed_plotlyjs: bool = True,
@@ -34,16 +33,12 @@ def show(traces: Union[Traces, go.Figure],
 
     optional arguments:
       @ layout         : A layout object.
-      @ download_as    : File format of the "Download plot" buttion in the plot.
-                         Must be one of {"png", "jpeg", "svg"}.
       @ out_html       : HTML file name to which the plot is output.
       @ out_image      : Image file name to which the plot is output.
                          .[png|jpeg|svg|pdf|eps] are supported.
       @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in `out_html`.
       @ do_not_display : If True, do not draw the plot.
     """
-    assert download_as in ("png", "jpeg", "svg"), \
-        f"Unsupported output file type: {download_as}"
     if isinstance(traces, go.Figure):
         fig = traces
         if layout is not None:
@@ -51,7 +46,7 @@ def show(traces: Union[Traces, go.Figure],
     else:
         fig = make_figure(traces, layout)
     if not do_not_display:
-        fig.show(config=dict(toImageButtonOptions=dict(format=download_as)))
+        fig.show()
     if out_image is not None:
         fig.write_image(out_image)
     if out_html is not None:

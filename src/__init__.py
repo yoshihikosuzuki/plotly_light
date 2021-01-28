@@ -1,11 +1,15 @@
 from ._histogram import make_hist
+from ._bar import make_bar
 from ._scatter import make_scatter
 from ._line import make_lines
 from ._rectangle import make_rect
 from ._layout import make_layout, merge_layout
 from ._show import make_figure, show, show_image
 from ._type import Traces
-from ._config import set_default_layout, set_default_theme, set_default_renderer
+from ._config import (set_default_layout,
+                      set_default_theme,
+                      set_default_renderer,
+                      set_default_config)
 
 
 def _notebook_mode() -> None:
@@ -40,10 +44,13 @@ else:
         set_default_renderer("iframe_connected")
 
 
-# Use custom default theme/layout
+# Use custom default theme/layout/config
 set_default_theme("plotly_white")
 set_default_layout(make_layout(font="Arial",
                                font_col="black",
                                font_size=16,
                                legend_border_col="black",
                                margin=dict(l=10, r=10, t=50, b=10)))
+set_default_config(dict(showTips=False,
+                        displaylogo=False,
+                        toImageButtonOptions=dict(format="svg")))
