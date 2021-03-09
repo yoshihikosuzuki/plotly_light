@@ -5,10 +5,11 @@ import numpy as np
 import plotly.graph_objects as go
 from bits.util import RelCounter
 from ._bar import make_bar
-from ._scatter import make_scatter
+from ._line import make_lines
 
 
 def make_hist(data: Union[Sequence, Mapping[Any, int]],
+              text: Optional[Sequence] = None,
               start: Optional[int] = None,
               end: Optional[int] = None,
               bin_size: Optional[int] = None,
@@ -16,19 +17,20 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
               relative: bool = False,
               col: Optional[str] = None,
               opacity: float = 1,
+              use_lines: bool = False,
+              line_width: float = 1,
+              use_webgl: bool = True,
+              use_histogram: bool = False,
               name: Optional[str] = None,
               show_legend: bool = False,
-              show_init: bool = True,
-              line_plot: bool = False,
-              line_width: float = 1,
-              use_webgl: bool = False,
-              use_histogram: bool = False) -> Union[go.Bar, go.Histogram]:
+              show_init: bool = True) -> Union[go.Bar, go.Histogram]:
     """Create a simple Trace object of a histogram.
 
     positional arguments:
       @ data : Raw data of numbers or counter of numbers
 
     optional arguments:
+      @ text          : Texts for each data.
       @ start         : Start position of the plot range.
       @ end           : End position of the plot range.
       @ bin_size      : Size of each bin.
@@ -36,13 +38,17 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
       @ relative      : Convert values in y-axis to relative frequencies.
       @ col           : Color of bars.
       @ opacity       : Opacity of bars.
+      @ use_lines     : If True, draw as lines of a scatter plot.
+                        Use this for large datasets.
+      @ use_histogram : If True, force to use `go.Histogram`.
+                        This is not recommended in most cases.
       @ name          : Display name of the trace in legend.
-      @ show_init       : Show this trace initially.
       @ show_legend   : Show this trace in legend.
-      @ line_plot     : Draw as a line plot instead of a bar plot.
-      @ line_width    : Valid only if `line_plot` is True.
-      @ use_webgl     : Valid only if `line_plot` is True.
-      @ use_histogram : Force to use `go.Histogram`, not `go.Bar`.
+      @ show_init       : Show this trace initially.
+
+    optional arguments valid only if `use_lines` is True:
+      @ line_width    : Corresponds to bin width.
+      @ use_webgl     : Use WebGL instead of SVG.
     """
     # Use the original histogram function anyway (not recommended)
     if use_histogram:
@@ -58,29 +64,37 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                             name=name,
                             showlegend=show_legend,
                             visible=None if show_init else "legendonly")
+
+    def _to_trace(x, y) -> Union[go.Bar, go.Scatter]:
+        if use_lines:
+            return make_lines([(_x, 0, _x, _y) for _x, _y in zip(x, y)],
+                              text=text,
+                              width=line_width,
+                              col=col,
+                              opacity=opacity,
+                              name=name,
+                              show_legend=show_legend,
+                              show_init=show_init,
+                              use_webgl=use_webgl)
+        else:
+            return make_bar(x=x,
+                            y=y,
+                            text=text,
+                            col=col,
+                            opacity=opacity,
+                            name=name,
+                            show_legend=show_legend,
+                            show_init=show_init)
+
     # Already a dictionary (counter), or non-numerical, categorical data
     if isinstance(data, Mapping) or not isinstance(next(iter(data)), Number):
         counter = RelCounter(data)
         if relative:
             counter = counter.relative()
-        return (make_bar(**dict(zip(('x', 'y'),
-                                    zip(*counter.items()))),
-                         col=col,
-                         opacity=opacity,
-                         name=name,
-                         show_legend=show_legend,
-                         show_init=show_init)
-                if not line_plot else
-                make_scatter(**dict(zip(('x', 'y'),
-                                        zip(*counter.items()))),
-                             col=col,
-                             opacity=opacity,
-                             mode="lines",
-                             line_width=line_width,
-                             name=name,
-                             show_legend=show_legend,
-                             show_init=show_init,
-                             use_webgl=use_webgl))
+        if text is not None:
+            assert len(counter) == len(text), \
+                f"Length of `text` ({len(text)}) != # of data ({len(counter)})"
+        return _to_trace(*zip(*counter.items()))
     # Numerical data
     if start is None:
         start = min(data)
@@ -96,23 +110,9 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                                      range=(start - bin_size / 2,
                                             end + bin_size / 2),
                                      bins=bin_num)
-    return (make_bar(x=[(bin_edges[i] + bin_edges[i + 1]) / 2
-                        for i in range(len(bin_edges) - 1)],
-                     y=counts,
-                     col=col,
-                     opacity=opacity,
-                     name=name,
-                     show_legend=show_legend,
-                     show_init=show_init)
-            if not line_plot else
-            make_scatter(x=[(bin_edges[i] + bin_edges[i + 1]) / 2
-                            for i in range(len(bin_edges) - 1)],
-                         y=counts,
-                         col=col,
-                         opacity=opacity,
-                         mode="lines",
-                         line_width=line_width,
-                         name=name,
-                         show_legend=show_legend,
-                         show_init=show_init,
-                         use_webgl=use_webgl))
+    if text is not None:
+        assert len(counts) == len(text), \
+            f"Length of `text` ({len(text)}) != # of bins ({len(counts)})"
+    return _to_trace([(bin_edges[i] + bin_edges[i + 1]) / 2
+                      for i in range(len(bin_edges) - 1)],
+                     counts)

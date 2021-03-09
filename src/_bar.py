@@ -4,6 +4,8 @@ import plotly.graph_objects as go
 
 def make_bar(x: Sequence,
              y: Sequence,
+             text: Optional[Sequence] = None,
+             width: int = 1,
              col: Optional[str] = None,
              opacity: float = 1,
              name: Optional[str] = None,
@@ -24,6 +26,8 @@ def make_bar(x: Sequence,
     """
     return go.Bar(x=x,
                   y=y,
+                  text=text,
+                  width=width,
                   marker_color=col,
                   opacity=opacity,
                   name=name,
