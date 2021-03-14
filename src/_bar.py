@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 def make_bar(x: Sequence,
              y: Sequence,
              text: Optional[Sequence] = None,
-             width: int = 1,
+             width: Optional[int] = None,
              col: Optional[str] = None,
              opacity: float = 1,
              name: Optional[str] = None,
