@@ -5,7 +5,7 @@ from ._line import make_lines
 from ._rectangle import make_rect
 from ._layout import make_layout, merge_layout
 from ._show import make_figure, show, show_image
-from ._type import Traces
+from ._type import Traces, BaseTraceType
 from ._config import (set_default_layout,
                       set_default_theme,
                       set_default_renderer,
