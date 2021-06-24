@@ -1,9 +1,7 @@
-from typing import Any, Optional, Dict
-from dataclasses import dataclass
+from typing import Any, Dict
 import plotly.io as pio
 import plotly.graph_objects as go
-from logzero import logger
-from ._layout import make_layout
+from ._layout import merge_layout
 
 
 default_theme = pio.templates.default
@@ -54,6 +52,18 @@ def set_default_layout(layout: go.Layout) -> None:
     global default_layout
     default_layout = layout
     _set_default_template()
+
+
+def update_default_layout(layout: go.Layout) -> None:
+    """Update the default layout for plots.
+
+    positional arguments:
+      @ layout    : The layout object.
+    """
+    global default_layout
+    set_default_layout(merge_layout(default_layout,
+                                    layout,
+                                    overwrite=False))
 
 
 def set_default_renderer(renderer_name: str) -> None:
