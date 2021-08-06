@@ -50,21 +50,6 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
       @ line_width    : Corresponds to bin width.
       @ use_webgl     : Use WebGL instead of SVG.
     """
-    # Use the original histogram function anyway (not recommended)
-    if use_histogram:
-        assert isinstance(data, Sequence), \
-            "Only Sequence objects are supported if `use_histogram`."
-        return go.Histogram(x=data,
-                            xbins=dict(start=start,
-                                       end=end,
-                                       size=bin_size),
-                            histnorm="percent" if relative else "",
-                            marker=dict(color=col),
-                            opacity=opacity,
-                            name=name,
-                            showlegend=show_legend,
-                            visible=None if show_init else "legendonly")
-
     def _to_trace(x, y) -> Union[go.Bar, go.Scatter]:
         if use_lines:
             return make_lines([(_x, 0, _x, _y) for _x, _y in zip(x, y)],
@@ -85,6 +70,23 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
                             name=name,
                             show_legend=show_legend,
                             show_init=show_init)
+
+    assert len(data) > 0, "Empty data"
+
+    # Use the original histogram function anyway (not recommended)
+    if use_histogram:
+        assert isinstance(data, Sequence), \
+            "Only Sequence objects are supported if `use_histogram`."
+        return go.Histogram(x=data,
+                            xbins=dict(start=start,
+                                       end=end,
+                                       size=bin_size),
+                            histnorm="percent" if relative else "",
+                            marker=dict(color=col),
+                            opacity=opacity,
+                            name=name,
+                            showlegend=show_legend,
+                            visible=None if show_init else "legendonly")
 
     # Already a dictionary (counter), or non-numerical, categorical data
     if isinstance(data, Mapping) or not isinstance(next(iter(data)), Number):
