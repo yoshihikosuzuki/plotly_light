@@ -24,8 +24,9 @@ def set_default_theme(theme_name: str,
     """Change plotly's default theme.
 
     positional_arguments:
-      @ theme_name : A plotly theme name like:
-                      {"ggplot2",
+      @ theme_name : A plotly theme name. Must be one of:
+                      {"plotly_light",   (default)
+                       "ggplot2",
                        "seaborn",
                        "simple_white",
                        "plotly",

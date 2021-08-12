@@ -1,4 +1,5 @@
 import os
+import plotly.io as pio
 from plotly.io._base_renderers import IFrameRenderer
 from logzero import logger
 from uuid import uuid4
@@ -100,3 +101,10 @@ allowfullscreen
     def build_url(self):
         # NOTE: Path for iframe must be a relative path from the root dir
         return self.out_fname
+
+
+def _set_custom_iframe_renderers() -> None:
+    pio.renderers["iframe"] = MyIFrameRenderer(config=pio._renderers.config,
+                                               include_plotlyjs=True)
+    pio.renderers["iframe_connected"] = MyIFrameRenderer(config=pio._renderers.config,
+                                                         include_plotlyjs="cdn")

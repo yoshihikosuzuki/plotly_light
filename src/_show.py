@@ -1,9 +1,9 @@
-from typing import Union, Optional, List, Dict
+from typing import Union, Optional, Dict
 from IPython.display import Image, display
 import plotly.express as px
 import plotly.graph_objects as go
 from skimage import io
-from ._layout import make_layout, merge_layout
+from ._layout import merge_layout
 from ._type import Traces
 
 

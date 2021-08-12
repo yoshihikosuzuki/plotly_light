@@ -12,8 +12,6 @@ def make_layout(width: Optional[int] = None,
                 y_title: Optional[str] = None,
                 x_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
                 y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
-                x_dtick: Optional[int] = None,
-                y_dtick: Optional[int] = None,
                 x_logscale: Optional[bool] = None,
                 y_logscale: Optional[bool] = None,
                 x_grid: Optional[bool] = None,
@@ -22,6 +20,10 @@ def make_layout(width: Optional[int] = None,
                 y_zeroline: Optional[bool] = None,
                 x_reversed: Optional[bool] = None,
                 y_reversed: Optional[bool] = None,
+                x_ticks: Optional[str] = None,
+                y_ticks: Optional[str] = None,
+                x_dtick: Optional[int] = None,
+                y_dtick: Optional[int] = None,
                 x_ticklabel: Optional[bool] = None,
                 y_ticklabel: Optional[bool] = None,
                 anchor_axes: Optional[bool] = None,
@@ -48,6 +50,8 @@ def make_layout(width: Optional[int] = None,
       @ [x|y]_grid      : Show grid on [x|y]-axis if True.
       @ [x|y]_zeroline  : Show zeroline on [x|y]-axis if True.
       @ [x|y]_reversed  : Reverse [x|y]-axis if True.
+      @ [x|y]_ticks     : {"" (default), "outside", "inside"}.
+      @ [x|y]_dtick     : Distance between two adjacent ticks.
       @ [x|y]_ticklabel : Show tick labels of [x|y]-axis if True.
       @ anchor_axes     : Use same scale for both x/y axes.
       @ legend_[x|y]    : Relative position of the legend.
@@ -73,12 +77,14 @@ def make_layout(width: Optional[int] = None,
                                   zeroline=x_zeroline,
                                   showticklabels=x_ticklabel,
                                   range=x_range,
+                                  ticks=x_ticks,
                                   dtick=x_dtick),
                        yaxis=dict(title=dict(text=y_title),
                                   showgrid=y_grid,
                                   zeroline=y_zeroline,
                                   showticklabels=y_ticklabel,
                                   range=y_range,
+                                  ticks=y_ticks,
                                   dtick=y_dtick),
                        legend=dict(bordercolor=legend_border_col,
                                    borderwidth=legend_border_width,
