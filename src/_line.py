@@ -1,23 +1,23 @@
 from typing import Union, Optional, Sequence, Tuple, List, Dict
 import plotly.graph_objects as go
-from ._scatter import make_scatter
+from ._scatter import scatter
 
 Coord = Tuple[int, int, int, int]
 
 
-def make_lines(coords: Union[Coord, List[Coord]],
-               text: Optional[Sequence] = None,
-               width: float = 1,
-               col: str = "black",
-               opacity: Optional[float] = None,
-               use_shape: bool = False,
-               xref: str = "x",
-               yref: str = "y",
-               layer: str = "above",
-               name: Optional[str] = None,
-               show_legend: bool = False,
-               show_init: bool = True,
-               use_webgl: bool = True) -> List[go.Scatter]:
+def lines(coords: Union[Coord, List[Coord]],
+          text: Optional[Sequence] = None,
+          width: float = 1,
+          col: str = "black",
+          opacity: Optional[float] = None,
+          use_shape: bool = False,
+          xref: str = "x",
+          yref: str = "y",
+          layer: str = "above",
+          name: Optional[str] = None,
+          show_legend: bool = False,
+          show_init: bool = True,
+          use_webgl: bool = True) -> List[go.Scatter]:
     """For a collection of lines with same width and color.
 
     positional arguments:
@@ -67,17 +67,17 @@ def make_lines(coords: Union[Coord, List[Coord]],
 
     if not isinstance(coords, list):
         coords = [coords]
-    return make_scatter(x=[x for x0, _, x1, _ in coords
-                           for x in (x0, x1, None)],
-                        y=[y for _, y0, _, y1 in coords
-                            for y in (y0, y1, None)],
-                        text=([x for t in text for x in (t, t, None)]
-                              if text is not None else text),
-                        mode="lines",
-                        line_width=width,
-                        col=col,
-                        opacity=opacity,
-                        name=name,
-                        show_legend=show_legend,
-                        show_init=show_init,
-                        use_webgl=use_webgl)
+    return scatter(x=[x for x0, _, x1, _ in coords
+                      for x in (x0, x1, None)],
+                   y=[y for _, y0, _, y1 in coords
+                      for y in (y0, y1, None)],
+                   text=([x for t in text for x in (t, t, None)]
+                         if text is not None else text),
+                   mode="lines",
+                   line_width=width,
+                   col=col,
+                   opacity=opacity,
+                   name=name,
+                   show_legend=show_legend,
+                   show_init=show_init,
+                   use_webgl=use_webgl)

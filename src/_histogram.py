@@ -4,26 +4,26 @@ from collections import Counter
 import numpy as np
 import plotly.graph_objects as go
 from bits.util import RelCounter
-from ._bar import make_bar
-from ._line import make_lines
+from ._bar import bar
+from ._line import lines
 
 
-def make_hist(data: Union[Sequence, Mapping[Any, int]],
-              text: Optional[Sequence] = None,
-              start: Optional[int] = None,
-              end: Optional[int] = None,
-              bin_size: Optional[int] = None,
-              bin_num: int = 10,
-              relative: bool = False,
-              col: Optional[str] = None,
-              opacity: float = 1,
-              use_lines: bool = False,
-              line_width: float = 1,
-              use_webgl: bool = True,
-              use_histogram: bool = False,
-              name: Optional[str] = None,
-              show_legend: bool = False,
-              show_init: bool = True) -> Union[go.Bar, go.Histogram]:
+def hist(data: Union[Sequence, Mapping[Any, int]],
+         text: Optional[Sequence] = None,
+         start: Optional[int] = None,
+         end: Optional[int] = None,
+         bin_size: Optional[int] = None,
+         bin_num: int = 10,
+         relative: bool = False,
+         col: Optional[str] = None,
+         opacity: float = 1,
+         use_lines: bool = False,
+         line_width: float = 1,
+         use_webgl: bool = True,
+         use_histogram: bool = False,
+         name: Optional[str] = None,
+         show_legend: bool = False,
+         show_init: bool = True) -> Union[go.Bar, go.Histogram]:
     """Create a simple Trace object of a histogram.
 
     positional arguments:
@@ -52,24 +52,24 @@ def make_hist(data: Union[Sequence, Mapping[Any, int]],
     """
     def _to_trace(x, y) -> Union[go.Bar, go.Scatter]:
         if use_lines:
-            return make_lines([(_x, 0, _x, _y) for _x, _y in zip(x, y)],
-                              text=text,
-                              width=line_width,
-                              col=col,
-                              opacity=opacity,
-                              name=name,
-                              show_legend=show_legend,
-                              show_init=show_init,
-                              use_webgl=use_webgl)
+            return lines([(_x, 0, _x, _y) for _x, _y in zip(x, y)],
+                         text=text,
+                         width=line_width,
+                         col=col,
+                         opacity=opacity,
+                         name=name,
+                         show_legend=show_legend,
+                         show_init=show_init,
+                         use_webgl=use_webgl)
         else:
-            return make_bar(x=x,
-                            y=y,
-                            text=text,
-                            col=col,
-                            opacity=opacity,
-                            name=name,
-                            show_legend=show_legend,
-                            show_init=show_init)
+            return bar(x=x,
+                       y=y,
+                       text=text,
+                       col=col,
+                       opacity=opacity,
+                       name=name,
+                       show_legend=show_legend,
+                       show_init=show_init)
 
     assert len(data) > 0, "Empty data"
 

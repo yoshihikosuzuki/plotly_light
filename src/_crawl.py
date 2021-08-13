@@ -2,7 +2,6 @@ from typing import List
 from os import listdir, remove
 from os.path import basename
 import json
-from logzero import logger
 import ipynb_path
 
 

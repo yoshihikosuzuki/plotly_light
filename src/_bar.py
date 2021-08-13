@@ -1,16 +1,15 @@
 from typing import Optional, Sequence
 import plotly.graph_objects as go
 
-
-def make_bar(x: Sequence,
-             y: Sequence,
-             text: Optional[Sequence] = None,
-             width: Optional[int] = None,
-             col: Optional[str] = None,
-             opacity: float = 1,
-             name: Optional[str] = None,
-             show_legend: bool = False,
-             show_init: bool = True) -> go.Bar:
+def bar(x: Sequence,
+        y: Sequence,
+        text: Optional[Sequence] = None,
+        width: Optional[int] = None,
+        col: Optional[str] = None,
+        opacity: float = 1,
+        name: Optional[str] = None,
+        show_legend: bool = False,
+        show_init: bool = True) -> go.Bar:
     """Create a simple Trace object of a histogram.
 
     positional arguments:

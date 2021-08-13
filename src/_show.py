@@ -7,8 +7,8 @@ from ._layout import merge_layout
 from ._type import Traces
 
 
-def make_figure(traces: Traces,
-                layout: Optional[go.Layout] = None) -> go.Figure:
+def figure(traces: Traces,
+           layout: Optional[go.Layout] = None) -> go.Figure:
     """Same as go.Figure(), just for compatibility.
 
     positional arguments:
@@ -44,7 +44,7 @@ def show(traces: Union[Traces, go.Figure],
         if layout is not None:
             fig.layout = merge_layout(fig.layout, layout)
     else:
-        fig = make_figure(traces, layout)
+        fig = figure(traces, layout)
     if not do_not_display:
         fig.show()
     if out_image is not None:

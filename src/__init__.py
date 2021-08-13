@@ -1,10 +1,10 @@
-from ._histogram import make_hist
-from ._bar import make_bar
-from ._scatter import make_scatter
-from ._line import make_lines
-from ._rectangle import make_rect
-from ._layout import make_layout, merge_layout
-from ._show import make_figure, show, show_image
+from ._histogram import hist
+from ._bar import bar
+from ._scatter import scatter
+from ._line import lines
+from ._rectangle import rect
+from ._layout import layout, merge_layout
+from ._show import figure, show, show_image
 from ._type import Traces, BaseTraceType
 from ._config import (set_default_layout,
                       update_default_layout,
@@ -14,6 +14,15 @@ from ._config import (set_default_layout,
 from ._renderer import _set_custom_iframe_renderers
 from ._crawl import _remove_unused_htmls
 from ._theme import pl_layout
+
+# Function aliases for backward compatibility and ease of search
+make_hist = hist
+make_bar = bar
+make_scatter = scatter
+make_lines = lines
+make_rect = rect
+make_layout = layout
+make_figure = figure
 
 
 # If imported from an IPython environment, turn on the connected notebook mode.
@@ -39,12 +48,9 @@ else:
 
 # Use custom default theme/layout/config
 set_default_theme("simple_white")
-set_default_layout(merge_layout(pl_layout,
-                                make_layout(font="Arial",
-                                            font_col="black",
-                                            font_size=16,
-                                            legend_border_col="black",
-                                            margin=dict(l=10, r=10, t=50, b=10))))
+set_default_layout(pl_layout)
 set_default_config(dict(showTips=False,
                         displaylogo=False,
+                        modeBarButtonsToAdd=["hoverclosest",
+                                             "hovercompare"],
                         toImageButtonOptions=dict(format="svg")))

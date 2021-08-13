@@ -1,14 +1,14 @@
 from typing import Optional, Dict
 
 
-def make_rect(x0: float, y0: float, x1: float, y1: float,
-              xref: str = "x",
-              yref: str = "y",
-              fill_col: str = "grey",
-              opacity: float = 1.,
-              frame_width: float = 0,
-              frame_col: Optional[str] = None,
-              layer: str = "above") -> Dict:
+def rect(x0: float, y0: float, x1: float, y1: float,
+         xref: str = "x",
+         yref: str = "y",
+         fill_col: str = "grey",
+         opacity: float = 1.,
+         frame_width: float = 0,
+         frame_col: Optional[str] = None,
+         layer: str = "above") -> Dict:
     """Create a (non-interactive) rectangle object.
 
     positional arguments:

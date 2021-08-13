@@ -74,6 +74,7 @@ class MyIFrameRenderer(IFrameRenderer):
         # Build IFrame
         iframe_html = """\
 <iframe
+sandbox="allow-scripts allow-downloads"
 scrolling="no"
 width="{width}"
 height="{height}"
