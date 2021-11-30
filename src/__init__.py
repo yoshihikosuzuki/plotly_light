@@ -3,6 +3,7 @@ from ._bar import bar
 from ._scatter import scatter
 from ._line import lines
 from ._rectangle import rect
+from ._venn import venn
 from ._layout import layout, merge_layout
 from ._show import figure, show, show_image
 from ._type import Traces, BaseTraceType
@@ -21,6 +22,7 @@ make_bar = bar
 make_scatter = scatter
 make_lines = lines
 make_rect = rect
+make_venn = venn
 make_layout = layout
 make_figure = figure
 
