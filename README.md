@@ -6,7 +6,7 @@ A wrapper of Plotly Python aiming for lightweight plots and ease of use.
 
 :heavy_check_mark: **[SMALLER PLOT SIZE]** Plotly Light does not keep all raw data for a bar plot including a histogram, meaning you can keep the file size of a Jupyter Notebook file or a HTML file containing the plot very small even when drawing a histogram with a huge dataset.
 
-:heavy_check_mark: **[SEPARATE PLOT HTML DIRECTORY]** By default, each plot drawn by Plotly Light in a Jupyter Notebook is saved as a HTML file in a directory named `<notebook-basename>.iframe_figures/`, enabling us to keep the file size of a Notebook small and to easily obtain a single HTML file only of a plot. This feature can be disabled.
+:heavy_check_mark: **[SEPARATE DIRECTORY FOR HTML PLOTS]** By default, each plot drawn by Plotly Light in a Jupyter Notebook is saved as a HTML file in a directory named `<notebook-basename>.iframe_figures/`, enabling us to keep the file size of a Notebook small and to easily obtain a single HTML file only of a plot. This feature can be disabled.
 
 :heavy_check_mark: **[COMPREHENSIBLE FUNCTION ARGUMENTS]** All positional and optional arguments of the functions in Plotly Light are explicitly written (without using `*args` nor `**kwargs`), meaning you can easily find an argument you want by peeking the definition and docstring of a function (which is a feature typically provided by Jupyter Notebook and other editors).
 
