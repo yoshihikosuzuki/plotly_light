@@ -1,3 +1,6 @@
+[![PyPI version](https://badge.fury.io/py/plotly-light.svg)](https://badge.fury.io/py/plotly-light)
+[![License](http://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 # Plotly Light
 
 A wrapper of Plotly Python aiming for lightweight plots and ease of use.
