@@ -3,9 +3,16 @@ from numbers import Number
 from collections import Counter
 import numpy as np
 import plotly.graph_objects as go
-from bits.util import RelCounter
 from ._bar import bar
 from ._line import lines
+
+
+class RelCounter(Counter):
+    """Subclass of Counter with a method returning the relative frequencies."""
+
+    def relative(self):
+        tot = sum(self.values())
+        return {k: v / tot * 100 for k, v in self.items()}
 
 
 def hist(data: Union[Sequence, Mapping[Any, int]],
