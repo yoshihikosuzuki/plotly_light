@@ -115,7 +115,8 @@ def layout(width: Optional[int] = None,
 
 
 def merge_layout(base_layout, *layouts) -> go.Layout:
-    """Merge multiple layouts. Order of arguments = Order of priority.
+    """Merge multiple layouts. The `base_layout` is iteratively updated by each 
+    of the other layouts in the order of arguments.
     """
     if not isinstance(base_layout, go.Layout):
         base_layout = layout().update(base_layout)

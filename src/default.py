@@ -1,5 +1,11 @@
+import plotly.io as pio
+
+renderer = pio.renderers.default
+
+theme = "simple_white"
+
 # Base is "simple_white", but the color and default appearance of zerolines and ticks are changed.
-pl_layout = {
+layout = {
     'annotationdefaults': {'arrowhead': 0, 'arrowwidth': 1},
     'autotypenumbers': 'strict',
     'coloraxis': {'colorbar': {'outlinewidth': 1, 'tickcolor': 'lightgray', 'ticks': ''}},
@@ -28,9 +34,7 @@ pl_layout = {
                                        [0.7777777777777778, '#6ece58'],
                                        [0.8888888888888888, '#b5de2b'], [1.0,
                                        '#fde725']]},
-    'colorway': #['#1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B', '#E377C2', '#7F7F7F', '#BCBD22', '#17BECF'],
-                #['#0000C0', '#EE7733', '#009988', '#AA4499', '#00CFFF', '#BBCC33', '#A50026', '#C2A5CF', '#CCEEFF', '#FFAABB'],
-                ['blue', 'red', 'lime', 'purple', 'darkorange', 'navy', 'yellow', 'deepskyblue', 'darkred', 'pink'],
+    'colorway': ['blue', 'red', 'lime', 'purple', 'darkorange', 'navy', 'yellow', 'deepskyblue', 'darkred', 'pink'],
     'font': {'color': 'black', 'family': 'Arial', 'size': 16},
     'legend': {'bordercolor': 'black'},
     'margin': {'b': 10, 'l': 10, 'r': 10, 't': 50},
@@ -129,3 +133,9 @@ pl_layout = {
               'zeroline': True,
               'zerolinecolor': 'lightgray'}
 }
+
+config = dict(showTips=False,
+              displaylogo=False,
+              modeBarButtonsToAdd=["hoverclosest",
+                                   "hovercompare"],
+              toImageButtonOptions=dict(format="svg"))
