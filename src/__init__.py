@@ -6,7 +6,7 @@ from ._line import lines
 from ._rectangle import rect
 from ._venn import venn
 from ._layout import layout, merge_layout
-from ._show import figure, show, show_image
+from ._show import figure, show, show_mult, show_image
 from ._type import Traces, BaseTraceType
 from ._config import (set_default_theme,
                       set_default_layout,
