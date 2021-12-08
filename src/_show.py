@@ -1,10 +1,11 @@
-from typing import Union, Optional, Dict
+from typing import Union, Optional, Sequence, Dict
 from IPython.display import Image, display
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.basedatatypes import BaseTraceType
 from plotly.subplots import make_subplots
 from skimage import io
-from ._layout import merge_layout
+from . import _layout as pll
 from ._type import Traces
 
 
@@ -43,9 +44,10 @@ def show(traces: Union[Traces, go.Figure],
     if isinstance(traces, go.Figure):
         fig = traces
         if layout is not None:
-            fig.layout = merge_layout(fig.layout, layout)
+            fig.layout = pll.merge_layout(fig.layout, layout)
     else:
         fig = figure(traces, layout)
+
     if not do_not_display:
         fig.show()
     if out_image is not None:
@@ -55,7 +57,7 @@ def show(traces: Union[Traces, go.Figure],
                        include_plotlyjs=embed_plotlyjs)
 
 
-def show_mult(traces: Union[Traces, go.Figure],
+def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
               layout: Optional[go.Layout] = None,
               n_col: int = 2,
               out_image: Optional[str] = None,
@@ -65,10 +67,11 @@ def show_mult(traces: Union[Traces, go.Figure],
     """Plot a figure with multiple subplots in Jupyter Notebook.
 
     positional arguments:
-      @ traces : A trace, list of traces, or a Figure object.
+      @ figs : List of Trace or Figure objects. If an element is a Figure object,
+               its layout is used for that subplot.
 
     optional arguments:
-      @ layout         : A layout object.
+      @ layout         : A layout object for the overall figure.
       @ n_col          : Number of columns of plots. Number of rows is automatically determined.
       @ out_html       : HTML file name to which the plot is output.
       @ out_image      : Image file name to which the plot is output.
@@ -76,19 +79,32 @@ def show_mult(traces: Union[Traces, go.Figure],
       @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in `out_html`.
       @ do_not_display : If True, do not draw the plot.
     """
-    def infer_trace_type(trace):
-        return {"type": "xy"}
+    N = len(figs)
+    n_row = N // n_col + (0 if N % n_col == 0 else 1)
 
-    n_row = len(traces) // n_col + (0 if len(traces) % n_col == 0 else 1)
-    trace_types = [[infer_trace_type(traces[i * n_col + j]) if i * n_col + j < len(traces) else {}
-                    for j in range(n_col)] for i in range(n_row)]
-    fig = make_subplots(rows=n_row, cols=n_col, specs=trace_types)
+    # Decompose Figure (or Trace) into Traces & Layout
+    sub_tracess, sub_layouts = zip(*[(fig.data, fig.layout) if isinstance(fig, go.Figure)
+                                     else ((fig,), pll.layout())
+                                     for fig in figs])
+    sub_titles = [l.title.text for l in sub_layouts]
+    if all([x is None for x in sub_titles]):
+        sub_titles = None
+
+    # Make entire figure, add each traces & layout, and add overall layout
+    fig = make_subplots(rows=n_row, cols=n_col, subplot_titles=sub_titles)
     for i in range(n_row):
         for j in range(1, n_col + 1):
-            if i * n_col + j > len(traces):
+            if i * n_col + j > N:
                 continue
-            fig.add_trace(traces[i * n_col + j - 1], row=i + 1, col=j)
+            idx = i * n_col + j - 1
+            sub_traces = sub_tracess[idx]
+            for sub_trace in sub_traces:
+                fig.add_trace(sub_trace, row=i + 1, col=j)
+            l = sub_layouts[idx]
+            fig.update_xaxes(**l.xaxis.to_plotly_json(), row=i + 1, col=j)
+            fig.update_yaxes(**l.yaxis.to_plotly_json(), row=i + 1, col=j)
     fig.update_layout(layout)
+
     if not do_not_display:
         fig.show()
     if out_image is not None:
