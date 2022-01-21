@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 import plotly.io as pio
 import plotly.graph_objects as go
 from . import default
@@ -95,3 +95,8 @@ def set_default_renderer(renderer_name: str) -> None:
     pio.renderers.default = default.renderer = renderer_name
     set_default_config(config)
     pio.renderers._activate_pending_renderers()
+
+
+def set_default_colors(cols: List[str]) -> None:
+    default.layout["colorway"] = cols
+    _set_default_template()

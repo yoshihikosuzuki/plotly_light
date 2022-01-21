@@ -13,7 +13,8 @@ from ._config import (set_default_theme,
                       update_default_layout,
                       set_default_renderer,
                       set_default_config,
-                      update_default_config)
+                      update_default_config,
+                      set_default_colors)
 from ._renderer import _set_custom_iframe_renderers
 from ._crawl import _remove_unused_htmls
 
