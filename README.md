@@ -191,3 +191,4 @@ Every function `XXX` below can be called by `pl.XXX`, and `pl.XXX?` shows its do
 - `update_default_layout`
 - `update_default_config`
 - `set_default_renderer`
+- `set_default_colors`
