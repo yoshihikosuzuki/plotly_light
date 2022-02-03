@@ -110,6 +110,7 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
             l = sub_layouts[idx]
             fig.update_xaxes(**l.xaxis.to_plotly_json(), row=i + 1, col=j)
             fig.update_yaxes(**l.yaxis.to_plotly_json(), row=i + 1, col=j)
+    fig.update_layout(margin=dict(t=70, l=40))
     fig.update_layout(layout)
 
     if not do_not_display:
