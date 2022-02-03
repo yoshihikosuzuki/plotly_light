@@ -10,6 +10,8 @@ def layout(width: Optional[int] = None,
            title: Optional[str] = None,
            x_title: Optional[str] = None,
            y_title: Optional[str] = None,
+           x_standoff: Optional[int] = None,
+           y_standoff: Optional[int] = None,
            x_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
            y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
            x_logscale: Optional[bool] = None,
@@ -51,6 +53,7 @@ def layout(width: Optional[int] = None,
                         : Font size of title/x,y_title/x,y_tick/legend.
       @ title           : Title of the plot.
       @ [x|y]_title     : Title of [x|y]-axis of the plot.
+      @ [x|y]_standoff  : Size (in px) of the margin between tick labels and axis title.
       @ [x|y]_range     : Range on [x|y]-axis to be drawn in the plot.
       @ [x|y]_grid      : Show grid on [x|y]-axis if True.
       @ [x|y]_zeroline  : Show zeroline on [x|y]-axis if True.
@@ -59,12 +62,17 @@ def layout(width: Optional[int] = None,
       @ [x|y]_dtick     : Distance between two adjacent ticks.
       @ [x|y]_ticklabel : Show tick labels of [x|y]-axis if True.
       @ anchor_axes     : Use same scale for both x/y axes.
+      @ [grid|zeroline]_col
+                        : Color of the grids and the zerolines.
+      @ tick_[len|width|col]
+                        : Length/width/color of the ticks.
+      @ show_legend     : Show legend if True.
       @ legend_coord    : Relative coordinate (x, y) of the legend.
                           (x, y) = (1.02, 1) by default.
       @ legend_border_[col|width]
                         : Color/width for the borderlines of the legend box.
-      @ margin          : Margin of the plot.
-                          Default: `dict(l=80, r=80, t=100, b=80)`.
+      @ margin          : Margin of the plot. Any number of keys can be specified.
+                          Default: `dict(t=50, b=10, l=10, r=10, pad=0)`.
       @ shapes          : List of non-interactive shape objects.
       @ barmode         : {"group" (default), "stack", "overlay", "relative"}.
       @ hovermode       : {"closest" (default), "[x|y] [unified]", False}.
@@ -77,7 +85,7 @@ def layout(width: Optional[int] = None,
                   size=font_size,
                   color=font_col),
         title=dict(text=title),
-        xaxis=dict(title=dict(text=x_title),
+        xaxis=dict(title=dict(text=x_title, standoff=x_standoff),
                    type="log" if x_logscale is True else None,
                    autorange="reversed" if x_reversed is True else None,
                    showgrid=x_grid,
@@ -91,7 +99,7 @@ def layout(width: Optional[int] = None,
                    gridcolor=grid_col,
                    tickcolor=tick_col,
                    zerolinecolor=zeroline_col),
-        yaxis=dict(title=dict(text=y_title),
+        yaxis=dict(title=dict(text=y_title, standoff=y_standoff),
                    type="log" if y_logscale is True else None,
                    autorange="reversed" if y_reversed is True else None,
                    scaleanchor="x" if anchor_axes is True else None,
