@@ -35,6 +35,7 @@ def layout(width: Optional[int] = None,
            tick_width: Optional[float] = None,
            tick_col: Optional[str] = None,
            show_legend: Optional[bool] = None,
+           legend_horizontal: Optional[bool] = None,
            legend_coord: Optional[Tuple[Optional[float], Optional[float]]] = None,
            legend_border_col: Optional[str] = None,
            legend_border_width: Optional[int] = None,
@@ -45,37 +46,36 @@ def layout(width: Optional[int] = None,
     """Create a minimal Layout object.
 
     optional arguments:
-      @ width           : Width of the plot.
-      @ height          : Height of the plot.
-      @ font            : Font of characters in the plots.
-      @ font_col        : Font color of charactoers in the plots.
+      @ width                : Width of the plot.
+      @ height               : Height of the plot.
+      @ font                 : Font of characters in the plots.
+      @ font_col             : Font color of charactoers in the plots.
       @ font_size_[title|axis_title|axis_tick|legend]
-                        : Font size of title/x,y_title/x,y_tick/legend.
-      @ title           : Title of the plot.
-      @ [x|y]_title     : Title of [x|y]-axis of the plot.
-      @ [x|y]_standoff  : Size (in px) of the margin between tick labels and axis title.
-      @ [x|y]_range     : Range on [x|y]-axis to be drawn in the plot.
-      @ [x|y]_grid      : Show grid on [x|y]-axis if True.
-      @ [x|y]_zeroline  : Show zeroline on [x|y]-axis if True.
-      @ [x|y]_reversed  : Reverse [x|y]-axis if True.
-      @ [x|y]_ticks     : {"" (default), "outside", "inside"}.
-      @ [x|y]_dtick     : Distance between two adjacent ticks.
-      @ [x|y]_ticklabel : Show tick labels of [x|y]-axis if True.
-      @ anchor_axes     : Use same scale for both x/y axes.
-      @ [grid|zeroline]_col
-                        : Color of the grids and the zerolines.
-      @ tick_[len|width|col]
-                        : Length/width/color of the ticks.
-      @ show_legend     : Show legend if True.
-      @ legend_coord    : Relative coordinate (x, y) of the legend.
-                          (x, y) = (1.02, 1) by default.
+                             : Font size of title/x,y_title/x,y_tick/legend.
+      @ title                : Title of the plot.
+      @ [x|y]_title          : Title of [x|y]-axis of the plot.
+      @ [x|y]_standoff       : Size (in px) of the margin between tick labels and axis title.
+      @ [x|y]_range          : Range on [x|y]-axis to be drawn in the plot.
+      @ [x|y]_grid           : Show grid on [x|y]-axis if True.
+      @ [x|y]_zeroline       : Show zeroline on [x|y]-axis if True.
+      @ [x|y]_reversed       : Reverse [x|y]-axis if True.
+      @ [x|y]_ticks          : {"" (default), "outside", "inside"}.
+      @ [x|y]_dtick          : Distance between two adjacent ticks.
+      @ [x|y]_ticklabel      : Show tick labels of [x|y]-axis if True.
+      @ anchor_axes          : Use same scale for both x/y axes.
+      @ [grid|zeroline]_col  : Color of the grids and the zerolines.
+      @ tick_[len|width|col] : Length/width/color of the ticks.
+      @ show_legend          : Show legend if True.
+      @ legend_horizontal    : Shoe legend horizontally if True.
+      @ legend_coord         : Relative coordinate (x, y) of the legend.
+                               Default: (x, y) = (1.02, 1).
       @ legend_border_[col|width]
-                        : Color/width for the borderlines of the legend box.
-      @ margin          : Margin of the plot. Any number of keys can be specified.
-                          Default: `dict(t=50, b=10, l=10, r=10, pad=0)`.
-      @ shapes          : List of non-interactive shape objects.
-      @ barmode         : {"group" (default), "stack", "overlay", "relative"}.
-      @ hovermode       : {"closest" (default), "[x|y] [unified]", False}.
+                             : Color/width for the borderlines of the legend box.
+      @ margin               : Margin of the plot. Any number of keys can be specified.
+                               Default: `dict(t=50, b=10, l=10, r=10, pad=0)`.
+      @ shapes               : List of non-interactive shape objects.
+      @ barmode              : {"group" (default), "stack", "overlay", "relative"}.
+      @ hovermode            : {"closest" (default), "[x|y] [unified]", False}.
     """
     return go.Layout(
         width=width,
@@ -115,7 +115,8 @@ def layout(width: Optional[int] = None,
                    tickcolor=tick_col,
                    zerolinecolor=zeroline_col),
         showlegend=show_legend,
-        legend=dict(bordercolor=legend_border_col,
+        legend=dict(orientation='h' if legend_horizontal else None,
+                    bordercolor=legend_border_col,
                     borderwidth=legend_border_width,
                     x=None if legend_coord is None else legend_coord[0],
                     y=None if legend_coord is None else legend_coord[1]),

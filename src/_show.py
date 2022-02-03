@@ -60,6 +60,8 @@ def show(traces: Union[Traces, go.Figure],
 def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
               layout: Optional[go.Layout] = None,
               n_col: int = 2,
+              horizontal_spacing: Optional[float] = 0.1,
+              vertical_spacing: Optional[float] = 0.2,
               shared_xaxes: Union[bool, str] = False,
               shared_yaxes: Union[bool, str] = False,
               out_image: Optional[str] = None,
@@ -75,6 +77,9 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
     optional arguments:
       @ layout           : A layout object for the overall figure.
       @ n_col            : Number of columns of plots. Number of rows is automatically determined.
+      @ [horizontal|vertical]_spacing:
+                         : Size of spaces between subplots. Must be in [0, 1].
+                           Default: horizontal = 0.1 / #cols, vertical = 0.2 / #rows.
       @ shared_[x|y]axes : Must be boolean or one of {"columns", "rows", "all"}.
       @ out_html         : HTML file name to which the plot is output.
       @ out_image        : Image file name to which the plot is output.
@@ -98,6 +103,8 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
                         cols=n_col,
                         shared_xaxes=shared_xaxes,
                         shared_yaxes=shared_yaxes,
+                        horizontal_spacing=horizontal_spacing,
+                        vertical_spacing=vertical_spacing,
                         subplot_titles=sub_titles)
     for i in range(n_row):
         for j in range(1, n_col + 1):
