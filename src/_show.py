@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from plotly.basedatatypes import BaseTraceType
 from plotly.subplots import make_subplots
 from skimage import io
+from . import default
 from . import _layout as pll
 from ._type import Traces
 
@@ -24,6 +25,7 @@ def figure(traces: Traces,
 
 def show(traces: Union[Traces, go.Figure],
          layout: Optional[go.Layout] = None,
+         config: Optional[Dict] = None,
          out_image: Optional[str] = None,
          out_html: Optional[str] = None,
          embed_plotlyjs: bool = True,
@@ -49,7 +51,10 @@ def show(traces: Union[Traces, go.Figure],
         fig = figure(traces, layout)
 
     if not do_not_display:
-        fig.show()
+        _config = default.config
+        if config is not None:
+            _config.update(config)
+        fig.show(config=_config)
     if out_image is not None:
         fig.write_image(out_image)
     if out_html is not None:

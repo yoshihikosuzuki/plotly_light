@@ -66,6 +66,9 @@ def set_default_config(config: Dict[Any, Any]) -> None:
     positional_arguments:
       @ config : Config keys and values.
     """
+    if pio.renderers.default == '':
+        # Not a GUI environment
+        return
     pio.renderers[pio.renderers.default.split('+')[0]].config = default.config = config
 
 
@@ -77,6 +80,9 @@ def update_default_config(config: Dict[Any, Any]) -> None:
     positional_arguments:
       @ config : Config keys and values.
     """
+    if pio.renderers.default == '':
+        # Not a GUI environment
+        return
     pio.renderers[pio.renderers.default.split('+')[0]].config.update(config)
     default.config = pio.renderers[pio.renderers.default.split('+')[0]].config
 
@@ -91,6 +97,9 @@ def set_default_renderer(renderer_name: str) -> None:
                           "notebook[_connected]",
                           "iframe[_connected]"}
     """
+    if pio.renderers.default == '':
+        # Not a GUI environment
+        return
     config = pio.renderers[pio.renderers.default.split('+')[0]].config
     pio.renderers.default = default.renderer = renderer_name
     set_default_config(config)
