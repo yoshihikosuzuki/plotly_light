@@ -18,16 +18,6 @@ from ._config import (set_default_theme,
 from ._renderer import _set_custom_iframe_renderers
 from ._crawl import _remove_unused_htmls
 
-# Function aliases for backward compatibility and ease of search
-make_hist = hist
-make_bar = bar
-make_scatter = scatter
-make_lines = lines
-make_rect = rect
-make_venn = venn
-make_layout = layout
-make_figure = figure
-
 
 # Set default theme/layout/config of Plotly Light
 set_default_theme(default.theme)
@@ -44,8 +34,8 @@ except NameError:
 except Exception as e:
     print(e)
 else:
-    import plotly.offline as py
-    py.init_notebook_mode(connected=True)
+    import plotly.offline as _py
+    _py.init_notebook_mode(connected=True)
 
     try:
         _set_custom_iframe_renderers()
