@@ -1,10 +1,9 @@
 from typing import Any, Union, Optional, Sequence, Set
 import matplotlib.pyplot as plt
 from matplotlib_venn import venn2, venn2_circles, venn3, venn3_circles
-from ._type import DataSet
 
 
-def venn(data: Sequence[DataSet],
+def venn(data: Sequence[Union[Sequence, Set[Any]]],
          labels: Sequence[str],
          cols: Optional[Sequence[str]] = None,
          line_col: str = "black",

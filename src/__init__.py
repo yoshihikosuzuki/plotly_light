@@ -2,7 +2,7 @@ from . import default
 from ._histogram import hist
 from ._bar import bar
 from ._scatter import scatter
-from ._box import box
+from ._box import box, violin
 from ._line import lines
 from ._rectangle import rect
 from ._venn import venn
