@@ -37,5 +37,5 @@ $ pip install .
 
 ## How to use
 
-See [Reference](doc/Reference.ipynb).
+See [Reference](https://nbviewer.org/github/yoshihikosuzuki/plotly_light/blob/master/doc/Reference.ipynb).
 
