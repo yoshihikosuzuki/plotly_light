@@ -45,3 +45,6 @@ else:
     else:
         set_default_renderer("iframe_connected")
         _remove_unused_htmls()
+
+from logzero import logger as _logger
+_logger.info(f"pl.default.renderer = {default.renderer}")
