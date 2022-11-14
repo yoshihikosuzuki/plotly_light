@@ -27,9 +27,9 @@ class MyIFrameRenderer(IFrameRenderer):
                          html_directory)
 
         if ipynb_fname is not None:
-            nb_path = os.path.abspath(ipynb_fname)
+            nb_path = os.path.realpath(ipynb_fname)
         else:
-            nb_path = ipynb_path.get()
+            nb_path = os.path.realpath(ipynb_path.get())
         self.root_dir, nb_name = os.path.split(nb_path)
         self.html_directory = f"{nb_name}.iframe_figures"
         abs_html_directory = f"{nb_path}.iframe_figures"
@@ -98,7 +98,7 @@ allowfullscreen
         self.out_fname = f"{self.html_directory}/{uuid4()}.html"
         logger.debug(f"{self.out_fname}")
         # NOTE: Always make a plot at the Notebook's directory
-        cwd = os.getcwd()
+        cwd = os.path.realpath(os.getcwd())
         rel = os.path.relpath(
             os.path.commonprefix([self.root_dir, cwd]), cwd)
         return f"{rel}/{self.out_fname}"
