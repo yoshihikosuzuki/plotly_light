@@ -12,6 +12,7 @@ class MyIFrameRenderer(IFrameRenderer):
     """
 
     def __init__(self,
+                 ipynb_fname=None,
                  config=None,
                  auto_play=False,
                  post_script=None,
@@ -25,7 +26,10 @@ class MyIFrameRenderer(IFrameRenderer):
                          include_plotlyjs,
                          html_directory)
 
-        nb_path = ipynb_path.get()
+        if ipynb_fname is not None:
+            nb_path = os.path.abspath(ipynb_fname)
+        else:
+            nb_path = ipynb_path.get()
         self.root_dir, nb_name = os.path.split(nb_path)
         self.html_directory = f"{nb_name}.iframe_figures"
         abs_html_directory = f"{nb_path}.iframe_figures"
@@ -104,8 +108,10 @@ allowfullscreen
         return self.out_fname
 
 
-def _set_custom_iframe_renderers() -> None:
-    pio.renderers["iframe"] = MyIFrameRenderer(config=pio._renderers.config,
+def _set_custom_iframe_renderers(ipynb_fname=None) -> None:
+    pio.renderers["iframe"] = MyIFrameRenderer(ipynb_fname=ipynb_fname,
+                                               config=pio._renderers.config,
                                                include_plotlyjs=True)
-    pio.renderers["iframe_connected"] = MyIFrameRenderer(config=pio._renderers.config,
+    pio.renderers["iframe_connected"] = MyIFrameRenderer(ipynb_fname=ipynb_fname,
+                                                         config=pio._renderers.config,
                                                          include_plotlyjs="cdn")

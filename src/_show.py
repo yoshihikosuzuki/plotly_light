@@ -29,7 +29,7 @@ def show(traces: Union[Traces, go.Figure],
          out_image: Optional[str] = None,
          out_html: Optional[str] = None,
          embed_plotlyjs: bool = True,
-         do_not_display: bool = False) -> None:
+         return_fig: bool = False) -> None:
     """Plot a figure in Jupyter Notebook.
 
     positional arguments:
@@ -41,7 +41,7 @@ def show(traces: Union[Traces, go.Figure],
       @ out_image      : Image file name to which the plot is output.
                          .[png|jpeg|svg|pdf|eps] are supported.
       @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in `out_html`.
-      @ do_not_display : If True, do not draw the plot.
+      @ return_fig     : If True, return Figure object instead of drawing a plot.
     """
     if isinstance(traces, go.Figure):
         fig = traces
@@ -50,20 +50,27 @@ def show(traces: Union[Traces, go.Figure],
     else:
         fig = figure(traces, layout)
 
-    if not do_not_display:
-        _config = default.config
-        if config is not None:
-            _config.update(config)
-        fig.show(config=_config)
+    _config = default.config
+    if config is not None:
+        _config.update(config)
+
     if out_image is not None:
         fig.write_image(out_image)
+
     if out_html is not None:
         fig.write_html(file=out_html,
+                       config=_config,
                        include_plotlyjs=embed_plotlyjs)
+
+    if return_fig:
+        return fig
+    else:
+        fig.show(config=_config)
 
 
 def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
               layout: Optional[go.Layout] = None,
+              config: Optional[Dict] = None,
               n_col: int = 2,
               horizontal_spacing: Optional[float] = 0.1,
               vertical_spacing: Optional[float] = 0.2,
@@ -72,7 +79,7 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
               out_image: Optional[str] = None,
               out_html: Optional[str] = None,
               embed_plotlyjs: bool = True,
-              do_not_display: bool = False) -> None:
+              return_fig: bool = False) -> None:
     """Plot a figure with multiple subplots in Jupyter Notebook.
 
     positional arguments:
@@ -90,7 +97,7 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
       @ out_image        : Image file name to which the plot is output.
                            .[png|jpeg|svg|pdf|eps] are supported.
       @ embed_plotlyjs   : If True, embed plotly.js codes (~3 MB) in `out_html`.
-      @ do_not_display   : If True, do not draw the plot.
+      @ return_fig       : If True, return Figure object instead of drawing a plot.
     """
     N = len(figs)
     n_row = N // n_col + (0 if N % n_col == 0 else 1)
@@ -111,6 +118,7 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
                         horizontal_spacing=horizontal_spacing,
                         vertical_spacing=vertical_spacing,
                         subplot_titles=sub_titles)
+
     for i in range(n_row):
         for j in range(1, n_col + 1):
             if i * n_col + j > N:
@@ -118,20 +126,28 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
             idx = i * n_col + j - 1
             sub_traces = sub_tracess[idx]
             for sub_trace in sub_traces:
-                fig.add_trace(sub_trace, row=i + 1, col=j)
+                fig.append_trace(sub_trace, row=i + 1, col=j)
             l = sub_layouts[idx]
             fig.update_xaxes(**l.xaxis.to_plotly_json(), row=i + 1, col=j)
             fig.update_yaxes(**l.yaxis.to_plotly_json(), row=i + 1, col=j)
     fig.update_layout(margin=dict(t=70, l=40))
     fig.update_layout(layout)
 
-    if not do_not_display:
-        fig.show()
+    _config = default.config
+    if config is not None:
+        _config.update(config)
+
     if out_image is not None:
         fig.write_image(out_image)
     if out_html is not None:
         fig.write_html(file=out_html,
+                       config=_config,
                        include_plotlyjs=embed_plotlyjs)
+
+    if return_fig:
+        return fig
+    else:
+        fig.show(config=_config)
 
 
 def show_image(fname: str,
