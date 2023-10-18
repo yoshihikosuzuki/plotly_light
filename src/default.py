@@ -1,8 +1,14 @@
 import plotly.io as pio
+from ._colors import colors
 
 renderer = pio.renderers.default
 theme = "simple_white"
-colorway = ['dodgerblue', '#ff7f0e', 'navy', 'darkred', 'cyan', 'yellow', '#17becf', 'crimson']
+
+# Selected colors for a series of plots
+colorway = [colors["blue"], colors["yellow"], colors["red"],
+            colors["darkblue"], colors["lightyellow"], colors["lightred"],
+            colors["lightblue"], colors['darkred'],
+            colors["lightgreen"], colors["purple"]]
 
 # Base is "simple_white", but the color and default appearance of zerolines and ticks are changed.
 layout = {

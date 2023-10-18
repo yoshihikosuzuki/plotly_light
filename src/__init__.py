@@ -1,4 +1,5 @@
 from . import default
+from ._colors import colors
 from ._histogram import hist
 from ._bar import bar
 from ._scatter import scatter
