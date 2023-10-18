@@ -1,8 +1,8 @@
 import plotly.io as pio
 
 renderer = pio.renderers.default
-
 theme = "simple_white"
+colorway = ['dodgerblue', '#ff7f0e', 'navy', 'darkred', 'cyan', 'yellow', '#17becf', 'crimson']
 
 # Base is "simple_white", but the color and default appearance of zerolines and ticks are changed.
 layout = {
@@ -35,7 +35,7 @@ layout = {
                                        [0.8888888888888888, '#b5de2b'], [1.0,
                                        '#fde725']]},
     # 'colorway': ['orange', 'dodgerblue', 'sienna', 'navy', 'lightseagreen', 'mediumpurple'],
-    'colorway': ['dodgerblue', '#ff7f0e', 'navy', 'darkred', 'cyan', 'yellow', '#17becf', 'crimson'],
+    'colorway': colorway,
     'font': {'color': 'black', 'family': 'Arial', 'size': 16},
     'legend': {'bordercolor': 'black'},
     'margin': {'b': 10, 'l': 10, 'r': 10, 't': 50},
