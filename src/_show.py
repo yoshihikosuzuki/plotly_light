@@ -1,12 +1,14 @@
-from typing import Union, Optional, Sequence, Dict
-from IPython.display import Image, display
+from typing import Dict, Optional, Sequence, Union
+
 import plotly.express as px
 import plotly.graph_objects as go
+from IPython.display import Image, display
 from plotly.basedatatypes import BaseTraceType
 from plotly.subplots import make_subplots
 from skimage import io
-from . import default
+
 from . import _layout as pll
+from . import default
 from ._type import Traces
 
 
@@ -72,6 +74,8 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
               layout: Optional[go.Layout] = None,
               config: Optional[Dict] = None,
               n_col: int = 2,
+              row_heights: Optional[Sequence[float]] = None,
+              col_widths: Optional[Sequence[float]] = None,
               horizontal_spacing: Optional[float] = 0.1,
               vertical_spacing: Optional[float] = 0.2,
               shared_xaxes: Union[bool, str] = False,
@@ -113,6 +117,8 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
     # Make entire figure, add each traces & layout, and add overall layout
     fig = make_subplots(rows=n_row,
                         cols=n_col,
+                        row_heights=row_heights,
+                        column_widths=col_widths,
                         shared_xaxes=shared_xaxes,
                         shared_yaxes=shared_yaxes,
                         horizontal_spacing=horizontal_spacing,

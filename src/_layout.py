@@ -28,6 +28,8 @@ def layout(
     y_ticks: Optional[Union[str, bool]] = None,
     x_dtick: Optional[int] = None,
     y_dtick: Optional[int] = None,
+    x_tickfontsize: Optional[int] = None,
+    y_tickfontsize: Optional[int] = None,
     x_ticklabel: Optional[bool] = None,
     y_ticklabel: Optional[bool] = None,
     x_standoff: Optional[int] = None,
@@ -80,7 +82,7 @@ def layout(
                                Show bounding line/ticks on the other side of the plot.
       @ anchor_axes          : Use same scale for both x/y axes.
       @ [grid|zeroline]_col  : Color of the grids and the zerolines.
-      @ tick_[col|len|width] : Color/kength/width of the ticks.
+      @ tick_[col|len|width] : Color/length/width of the ticks.
       @ bounding_line_[col|width]
                              : Color/width of the ticks.
       @ show_legend          : Show legend if True.
@@ -117,6 +119,7 @@ def layout(
             range=x_range,
             ticks="outside" if x_ticks is True else "" if x_ticks is False else x_ticks,
             dtick=x_dtick,
+            tickfont=dict(size=x_tickfontsize),
             ticklen=tick_len,
             tickwidth=tick_width,
             gridcolor=grid_col,
@@ -142,6 +145,7 @@ def layout(
             range=y_range,
             ticks="outside" if y_ticks is True else "" if y_ticks is False else y_ticks,
             dtick=y_dtick,
+            tickfont=dict(size=y_tickfontsize),
             ticklen=tick_len,
             tickwidth=tick_width,
             gridcolor=grid_col,
