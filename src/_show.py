@@ -1,11 +1,8 @@
 from typing import Dict, Optional, Sequence, Union
 
-import plotly.express as px
 import plotly.graph_objects as go
-from IPython.display import Image, display
 from plotly.basedatatypes import BaseTraceType
 from plotly.subplots import make_subplots
-from skimage import io
 
 from . import _layout as pll
 from . import default
@@ -154,34 +151,3 @@ def show_mult(figs: Sequence[Union[BaseTraceType, go.Figure]],
         return fig
     else:
         fig.show(config=_config)
-
-
-def show_image(fname: str,
-               interactive: bool = False,
-               width: Optional[int] = None,
-               height: Optional[int] = None,
-               margin: Dict = dict(l=0, r=0, t=0, b=0)) -> None:
-    """Plot an image file in Jupyter Notebook.
-
-    positional arguments:
-      @ fname : Name of the image file.
-
-    optional arguments:
-      @ interactive : If True, plot an interective (but very large) plot.
-      @ width  : Of the image.
-      @ height : Of the image.
-    """
-    if not interactive:
-        display(Image(fname, width=width, height=height))
-    else:
-        fig = px.imshow(io.imread(fname))
-        fig.update_layout(width=width,
-                          height=height,
-                          xaxis=dict(showgrid=False,
-                                     zeroline=False,
-                                     showticklabels=False),
-                          yaxis=dict(showgrid=False,
-                                     zeroline=False,
-                                     showticklabels=False),
-                          margin=margin)
-        fig.show()

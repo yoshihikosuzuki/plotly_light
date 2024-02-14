@@ -1,25 +1,29 @@
+from logzero import logger as _logger
+
 from . import default
-from ._colors import colors
-from ._histogram import hist
 from ._bar import bar
-from ._scatter import scatter
 from ._box import box, violin
+from ._colors import colors
+from ._config import (
+    set_default_colors,
+    set_default_config,
+    set_default_layout,
+    set_default_renderer,
+    set_default_theme,
+    update_default_config,
+    update_default_layout,
+)
+from ._crawl import _remove_unused_htmls
+from ._histogram import hist
+from ._image import image, show_image
+from ._layout import layout, merge_layout
 from ._line import lines
 from ._rectangle import rect
-from ._venn import venn
-from ._layout import layout, merge_layout
-from ._show import figure, show, show_mult, show_image
-from ._type import Traces, BaseTraceType
-from ._config import (set_default_theme,
-                      set_default_layout,
-                      update_default_layout,
-                      set_default_renderer,
-                      set_default_config,
-                      update_default_config,
-                      set_default_colors)
 from ._renderer import _set_custom_iframe_renderers
-from ._crawl import _remove_unused_htmls
-
+from ._scatter import scatter
+from ._show import figure, show, show_mult
+from ._type import BaseTraceType, Traces
+from ._venn import venn
 
 # Set default theme/layout/config of Plotly Light
 set_default_theme(default.theme)
@@ -41,11 +45,10 @@ else:
 
     try:
         _set_custom_iframe_renderers()
-    except Exception as e:
+    except Exception:
         pass
     else:
         set_default_renderer("iframe_connected")
         _remove_unused_htmls()
 
-from logzero import logger as _logger
 _logger.info(f"pl.default.renderer = {default.renderer}")
