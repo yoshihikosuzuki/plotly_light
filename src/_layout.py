@@ -26,12 +26,16 @@ def layout(
     y_reversed: Optional[bool] = None,
     x_ticks: Optional[Union[str, bool]] = None,
     y_ticks: Optional[Union[str, bool]] = None,
+    x_ticks_minor: Optional[Union[str, bool]] = None,
+    y_ticks_minor: Optional[Union[str, bool]] = None,
     x_dtick: Optional[int] = None,
     y_dtick: Optional[int] = None,
-    x_tickfontsize: Optional[int] = None,
-    y_tickfontsize: Optional[int] = None,
     x_ticklabel: Optional[bool] = None,
     y_ticklabel: Optional[bool] = None,
+    x_tickformat: Optional[str] = None,
+    y_tickformat: Optional[str] = None,
+    x_tickfontsize: Optional[int] = None,
+    y_tickfontsize: Optional[int] = None,
     x_standoff: Optional[int] = None,
     y_standoff: Optional[int] = None,
     x_bounding_line: Optional[bool] = None,
@@ -76,6 +80,7 @@ def layout(
       @ [x|y]_ticks          : {"" (or False; default), "outside" (or True), "inside"}.
       @ [x|y]_dtick          : Distance between two adjacent ticks.
       @ [x|y]_ticklabel      : Show tick labels of [x|y]-axis if True.
+      @ [x|y]_tickformat     : e.g. ",.0f" (integer w/ commas), "%"
       @ [x|y]_standoff       : Size (in px) of the margin between tick labels and axis title.
       @ [x|y]_bounding_line  : Show line bewteen axis and plot if True.
       @ [x|y]_mirror         : {True, "ticks", False, "all", "allticks"}.
@@ -105,11 +110,11 @@ def layout(
         title=dict(text=title),
         xaxis=dict(
             title=dict(text=x_title, standoff=x_standoff),
-            type="category"
-            if x_category is True
-            else "log"
-            if x_logscale is True
-            else None,
+            type=(
+                "category"
+                if x_category is True
+                else "log" if x_logscale is True else None
+            ),
             autorange="reversed" if x_reversed is True else None,
             showline=x_bounding_line,
             mirror=x_mirror,
@@ -118,7 +123,13 @@ def layout(
             showticklabels=x_ticklabel,
             range=x_range,
             ticks="outside" if x_ticks is True else "" if x_ticks is False else x_ticks,
+            minor_ticks=(
+                "outside"
+                if x_ticks_minor is True
+                else "" if x_ticks_minor is False else x_ticks_minor
+            ),
             dtick=x_dtick,
+            tickformat=x_tickformat,
             tickfont=dict(size=x_tickfontsize),
             ticklen=tick_len,
             tickwidth=tick_width,
@@ -130,11 +141,11 @@ def layout(
         ),
         yaxis=dict(
             title=dict(text=y_title, standoff=y_standoff),
-            type="category"
-            if y_category is True
-            else "log"
-            if y_logscale is True
-            else None,
+            type=(
+                "category"
+                if y_category is True
+                else "log" if y_logscale is True else None
+            ),
             autorange="reversed" if y_reversed is True else None,
             scaleanchor="x" if anchor_axes is True else None,
             showline=y_bounding_line,
@@ -144,7 +155,13 @@ def layout(
             showticklabels=y_ticklabel,
             range=y_range,
             ticks="outside" if y_ticks is True else "" if y_ticks is False else y_ticks,
+            minor_ticks=(
+                "outside"
+                if y_ticks_minor is True
+                else "" if y_ticks_minor is False else y_ticks_minor
+            ),
             dtick=y_dtick,
+            tickformat=y_tickformat,
             tickfont=dict(size=y_tickfontsize),
             ticklen=tick_len,
             tickwidth=tick_width,
