@@ -1,9 +1,10 @@
 import os
-import plotly.io as pio
-from plotly.io._base_renderers import IFrameRenderer
-from logzero import logger
 from uuid import uuid4
+
 import ipynb_path
+import plotly.io as pio
+from logzero import logger
+from plotly.io._base_renderers import IFrameRenderer
 
 
 class MyIFrameRenderer(IFrameRenderer):
@@ -11,20 +12,24 @@ class MyIFrameRenderer(IFrameRenderer):
     names of plots are unique and thus kept forever.
     """
 
-    def __init__(self,
-                 ipynb_fname=None,
-                 config=None,
-                 auto_play=False,
-                 post_script=None,
-                 animation_opts=None,
-                 include_plotlyjs=True,
-                 html_directory="iframe_figures"):
-        super().__init__(config,
-                         auto_play,
-                         post_script,
-                         animation_opts,
-                         include_plotlyjs,
-                         html_directory)
+    def __init__(
+        self,
+        ipynb_fname=None,
+        config=None,
+        auto_play=False,
+        post_script=None,
+        animation_opts=None,
+        include_plotlyjs=True,
+        html_directory="iframe_figures",
+    ):
+        super().__init__(
+            config,
+            auto_play,
+            post_script,
+            animation_opts,
+            include_plotlyjs,
+            html_directory,
+        )
 
         if ipynb_fname is not None:
             nb_path = os.path.realpath(ipynb_fname)
@@ -87,20 +92,17 @@ frameborder="0"
 allowfullscreen
 ></iframe>
 """.format(
-            width=iframe_width,
-            height=iframe_height,
-            src=self.build_url()
+            width=iframe_width, height=iframe_height, src=self.build_url()
         )
 
         return {"text/html": iframe_html}
 
     def build_filename(self):
         self.out_fname = f"{self.html_directory}/{uuid4()}.html"
-        logger.debug(f"{self.out_fname}")
+        # logger.debug(f"{self.out_fname}")
         # NOTE: Always make a plot at the Notebook's directory
         cwd = os.path.realpath(os.getcwd())
-        rel = os.path.relpath(
-            os.path.commonprefix([self.root_dir, cwd]), cwd)
+        rel = os.path.relpath(os.path.commonprefix([self.root_dir, cwd]), cwd)
         return f"{rel}/{self.out_fname}"
 
     def build_url(self):
@@ -109,9 +111,9 @@ allowfullscreen
 
 
 def _set_custom_iframe_renderers(ipynb_fname=None) -> None:
-    pio.renderers["iframe"] = MyIFrameRenderer(ipynb_fname=ipynb_fname,
-                                               config=pio._renderers.config,
-                                               include_plotlyjs=True)
-    pio.renderers["iframe_connected"] = MyIFrameRenderer(ipynb_fname=ipynb_fname,
-                                                         config=pio._renderers.config,
-                                                         include_plotlyjs="cdn")
+    pio.renderers["iframe"] = MyIFrameRenderer(
+        ipynb_fname=ipynb_fname, config=pio._renderers.config, include_plotlyjs=True
+    )
+    pio.renderers["iframe_connected"] = MyIFrameRenderer(
+        ipynb_fname=ipynb_fname, config=pio._renderers.config, include_plotlyjs="cdn"
+    )

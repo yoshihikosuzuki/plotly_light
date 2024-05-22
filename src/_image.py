@@ -5,16 +5,16 @@ import plotly.graph_objects as go
 from IPython.display import Image, display
 from logzero import logger
 
-from ._layout import layout
+from . import _layout
 
 
 def image(
     in_fname: str,
     width: Optional[int] = None,
     height: Optional[int] = None,
-    margin: Dict = dict(l=0, r=0, t=0, b=0),
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
+    layout: go.Layout = None,
     verbose: bool = False,
 ):
     img = PIL.Image.open(in_fname)
@@ -36,7 +36,9 @@ def image(
             yb, ye = 0, ih
 
     if width is not None:
-        if height is None:
+        if height is not None:
+            width, height = min(width, height / ar), min(height, width * ar)
+        else:
             height = width * ar
     else:
         if height is not None:
@@ -50,12 +52,16 @@ def image(
         )
 
     fig = go.Figure(
-        layout=layout(
-            width=width,
-            height=height,
-            x_range=(xb, xe),
-            y_range=(yb, ye),
-            margin=margin,
+        layout=_layout.merge_layout(
+            _layout.layout(
+                width=width,
+                height=height,
+                x_range=(xb, xe),
+                y_range=(yb, ye),
+                anchor_axes=True,
+                margin=dict(l=0, r=0, t=0, b=0),
+            ),
+            layout,
         )
     )
     if x_range is None and y_range is None:
@@ -84,9 +90,9 @@ def show_image(
     static: bool = False,
     width: Optional[int] = None,
     height: Optional[int] = None,
-    margin: Dict = dict(l=0, r=0, t=0, b=0),
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
+    layout: go.Layout = None,
     verbose: bool = False,
 ) -> None:
     """Quick utility for plotting an image file in Jupyter Notebook.
@@ -101,4 +107,4 @@ def show_image(
     if static:
         display(Image(fname, width=width, height=height))
     else:
-        image(fname, width, height, margin, x_range, y_range, verbose).show()
+        image(fname, width, height, x_range, y_range, layout, verbose).show()
