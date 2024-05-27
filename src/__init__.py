@@ -41,12 +41,13 @@ except Exception as e:
     print(e)
 else:
     import plotly.offline as _py
+
     _py.init_notebook_mode(connected=True)
 
     try:
         _set_custom_iframe_renderers()
-    except Exception:
-        pass
+    except Exception as e:
+        print(e)
     else:
         set_default_renderer("iframe_connected")
         _remove_unused_htmls()
