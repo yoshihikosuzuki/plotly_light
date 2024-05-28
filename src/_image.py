@@ -1,11 +1,11 @@
-from typing import Dict, Optional, Tuple
+from typing import Optional, Tuple
 
 import PIL.Image
 import plotly.graph_objects as go
 from IPython.display import Image, display
 from logzero import logger
 
-from . import _layout
+from . import _layout, _show
 
 
 def image(
@@ -56,6 +56,8 @@ def image(
             _layout.layout(
                 width=width,
                 height=height,
+                x_zeroline=False,
+                y_zeroline=False,
                 x_range=(xb, xe),
                 y_range=(yb, ye),
                 anchor_axes=True,
@@ -93,6 +95,7 @@ def show_image(
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
     layout: go.Layout = None,
+    return_fig: bool = False,
     verbose: bool = False,
 ) -> None:
     """Quick utility for plotting an image file in Jupyter Notebook.
@@ -105,6 +108,13 @@ def show_image(
       @ width | height : Of the image.
     """
     if static:
+        assert not return_fig, "`return_fig` must not be True for static image"
         display(Image(fname, width=width, height=height))
-    else:
-        image(fname, width, height, x_range, y_range, layout, verbose).show()
+        return
+
+    fig = image(fname, width, height, x_range, y_range, layout, verbose)
+
+    if return_fig:
+        return fig
+
+    _show.show(fig)
