@@ -17,7 +17,7 @@ from ._crawl import _remove_unused_htmls
 from ._histogram import hist
 from ._image import image, show_image
 from ._layout import layout, merge_layout
-from ._line import lines
+from ._line import lines, lines_shape
 from ._rectangle import rect
 from ._renderer import _set_custom_iframe_renderers
 from ._scatter import scatter
