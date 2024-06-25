@@ -14,6 +14,8 @@ def image(
     height: Optional[int] = None,
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
+    layer: str = "above",
+    opacity: Optional[float] = None,
     layout: go.Layout = None,
     verbose: bool = False,
 ):
@@ -81,7 +83,8 @@ def image(
             sizex=xe - xb,
             sizey=ye - yb,
             sizing="stretch",
-            layer="below",
+            layer=layer,
+            opacity=opacity,
         )
     )
     return fig
@@ -94,6 +97,8 @@ def show_image(
     height: Optional[int] = None,
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
+    layer: str = "above",
+    opacity: Optional[float] = None,
     layout: go.Layout = None,
     return_fig: bool = False,
     verbose: bool = False,
@@ -112,7 +117,7 @@ def show_image(
         display(Image(fname, width=width, height=height))
         return
 
-    fig = image(fname, width, height, x_range, y_range, layout, verbose)
+    fig = image(fname, width, height, x_range, y_range, layer, opacity, layout, verbose)
 
     if return_fig:
         return fig
