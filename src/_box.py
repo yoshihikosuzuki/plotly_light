@@ -58,6 +58,8 @@ def violin(
     name: Optional[str] = None,
     col: Optional[str] = None,
     opacity: float = 1,
+    side: Optional[str] = None,
+    pointpos: Optional[float] = None,
     show_box: bool = False,
     show_points: bool = False,
     show_legend: bool = False,
@@ -72,11 +74,14 @@ def violin(
       @ name        : Display name of the trace in legend and plot.
       @ col         : Color of the plot.
       @ opacity     : Opacity of the plot.
+      @ side        : Must be one of {None, "positive", "negative"}.
       @ show_box    : Show the box plot.
       @ show_points : Plot markers as well as the box.
       @ show_legend : Show this trace in legend.
       @ show_init   : Show this trace initially.
     """
+    if side == "positive" and pointpos is None:
+        pointpos = 1
     return go.Violin(
         y=data,
         text=text,
@@ -84,6 +89,8 @@ def violin(
         points="all" if show_points else None,
         marker={"color": col},
         opacity=opacity,
+        side=side,
+        pointpos=pointpos,
         name=name,
         showlegend=show_legend,
         visible=None if show_init else "legendonly",
