@@ -48,6 +48,17 @@ def image(
         else:
             width, height = iw, ih
 
+    # if width < 10:
+    #     logger.warning(
+    #         f"Width ({width:.1f}) is too small. Setting the minimum value, 10."
+    #     )
+    #     width = 10
+    # if height < 10:
+    #     logger.warning(
+    #         f"Height ({height:.1f}) is too small. Setting the minimum value, 10."
+    #     )
+    #     height = 10
+
     if verbose:
         logger.info(
             f"plot = W {width:.1f} x H {height:.1f}, range = x[{xb:.1f}..{xe:.1f}] - y[{yb:.1f}..{ye:.1f}]"

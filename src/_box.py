@@ -14,6 +14,7 @@ def box(
     show_points: bool = False,
     only_points: bool = False,
     marker_size: Optional[float] = None,
+    horizontal: bool = False,
     show_legend: bool = False,
     show_init: bool = True,
 ) -> go.Box:
@@ -32,8 +33,10 @@ def box(
       @ show_init   : Show this trace initially.
     """
     return go.Box(
-        y=data,
+        x=data if horizontal else None,
+        y=data if not horizontal else None,
         text=text,
+        orientation="h" if horizontal else None,
         boxpoints="all" if show_points or only_points else None,
         pointpos=0 if only_points else None,
         hoveron="points" if only_points else None,
@@ -62,6 +65,7 @@ def violin(
     pointpos: Optional[float] = None,
     show_box: bool = False,
     show_points: bool = False,
+    horizontal: bool = False,
     show_legend: bool = False,
     show_init: bool = True,
 ) -> go.Box:
@@ -83,8 +87,10 @@ def violin(
     if side == "positive" and pointpos is None:
         pointpos = 1
     return go.Violin(
-        y=data,
+        x=data if horizontal else None,
+        y=data if not horizontal else None,
         text=text,
+        orientation="h" if horizontal else None,
         box_visible=show_box,
         points="all" if show_points else None,
         marker={"color": col},

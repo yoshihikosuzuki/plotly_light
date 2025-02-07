@@ -4,26 +4,44 @@ import plotly.graph_objects as go
 
 
 def layout(
+    # plot size
     width: Optional[int] = None,
     height: Optional[int] = None,
+    # plot range
+    x_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
+    y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
+    # overall font
     font: Optional[str] = None,
     font_col: Optional[str] = None,
     font_size: Optional[int] = None,
+    # title
     title: Optional[str] = None,
     x_title: Optional[str] = None,
     y_title: Optional[str] = None,
-    x_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
-    y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
+    x_titlefontsize: Optional[int] = None,
+    y_titlefontsize: Optional[int] = None,
+    # grids
+    x_grid: Optional[bool] = None,
+    y_grid: Optional[bool] = None,
+    grid_col: Optional[str] = None,
+    x_zeroline: Optional[bool] = None,
+    y_zeroline: Optional[bool] = None,
+    zeroline_col: Optional[str] = None,
+    x_bounding_line: Optional[bool] = None,
+    y_bounding_line: Optional[bool] = None,
+    bounding_line_col: Optional[str] = None,
+    bounding_line_width: Optional[float] = None,
+    x_mirror: Optional[Union[bool, str]] = None,
+    y_mirror: Optional[Union[bool, str]] = None,
+    # axes
+    anchor_axes: Optional[bool] = None,
     x_category: Optional[bool] = None,
     y_category: Optional[bool] = None,
     x_logscale: Optional[bool] = None,
     y_logscale: Optional[bool] = None,
-    x_grid: Optional[bool] = None,
-    y_grid: Optional[bool] = None,
-    x_zeroline: Optional[bool] = None,
-    y_zeroline: Optional[bool] = None,
     x_reversed: Optional[bool] = None,
     y_reversed: Optional[bool] = None,
+    # axis ticks
     x_ticks: Optional[Union[str, bool]] = None,
     y_ticks: Optional[Union[str, bool]] = None,
     x_ticks_minor: Optional[Union[str, bool]] = None,
@@ -38,26 +56,21 @@ def layout(
     y_tickfontsize: Optional[int] = None,
     x_standoff: Optional[int] = None,
     y_standoff: Optional[int] = None,
-    x_bounding_line: Optional[bool] = None,
-    y_bounding_line: Optional[bool] = None,
-    x_mirror: Optional[Union[bool, str]] = None,
-    y_mirror: Optional[Union[bool, str]] = None,
-    anchor_axes: Optional[bool] = None,
-    grid_col: Optional[str] = None,
-    zeroline_col: Optional[str] = None,
     tick_col: Optional[str] = None,
     tick_len: Optional[float] = None,
     tick_width: Optional[float] = None,
-    bounding_line_col: Optional[str] = None,
-    bounding_line_width: Optional[float] = None,
+    # legend
     show_legend: Optional[bool] = None,
     legend_horizontal: Optional[bool] = None,
     legend_coord: Optional[Tuple[Optional[float], Optional[float]]] = None,
     legend_border_col: Optional[str] = None,
     legend_border_width: Optional[int] = None,
     margin: Optional[Dict] = None,
+    # shapes
     shapes: Optional[List[Dict]] = None,
+    # bar plot
     barmode: Optional[str] = None,
+    # interactive features
     hovermode: Optional[Union[str, bool]] = None,
 ) -> go.Layout:
     """Create a minimal Layout object.
@@ -109,7 +122,9 @@ def layout(
         font=dict(family=font, size=font_size, color=font_col),
         title=dict(text=title),
         xaxis=dict(
-            title=dict(text=x_title, standoff=x_standoff),
+            title=dict(
+                text=x_title, font=dict(size=x_titlefontsize), standoff=x_standoff
+            ),
             type=(
                 "category"
                 if x_category is True
@@ -140,7 +155,9 @@ def layout(
             linewidth=bounding_line_width,
         ),
         yaxis=dict(
-            title=dict(text=y_title, standoff=y_standoff),
+            title=dict(
+                text=y_title, font=dict(size=y_titlefontsize), standoff=y_standoff
+            ),
             type=(
                 "category"
                 if y_category is True
