@@ -7,6 +7,7 @@ def bar(
     x: Sequence,
     y: Sequence,
     text: Optional[Sequence] = None,
+    horizontal_plot: bool = False,
     width: Optional[int] = None,
     col: Optional[str] = None,
     line_width: Optional[int] = None,
@@ -33,6 +34,7 @@ def bar(
         x=x,
         y=y,
         text=text,
+        orientation="h" if horizontal_plot else None,
         width=width,
         marker=dict(
             color=col,
