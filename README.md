@@ -3,7 +3,7 @@
 
 # plotly_light
 
-A wrapper of Plotly Python aiming for lightweight plots and ease of use.
+A wrapper of Plotly Python aiming for lightweight plots.
 
 ## Main features
 
@@ -17,11 +17,13 @@ A wrapper of Plotly Python aiming for lightweight plots and ease of use.
 
 ## Requirements
 
-- Python >= 3.7 ([CPython](https://github.com/python/cpython) is recommended)
+- Python 3
+- Plotly Python >=6
+- Jupyter Notebook >= 7 (required by Plotly Python)
 
 ## How to install
 
-### 1. Via PyPI (recommended)
+### 1. Via PyPI
 
 ```bash
 $ pip install plotly-light

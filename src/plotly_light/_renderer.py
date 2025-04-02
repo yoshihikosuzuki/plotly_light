@@ -3,8 +3,9 @@ from uuid import uuid4
 
 import ipynb_path
 import plotly.io as pio
-from logzero import logger
 from plotly.io._base_renderers import IFrameRenderer
+
+from ._const import IFRAME_DIR
 
 
 class MyIFrameRenderer(IFrameRenderer):
@@ -20,7 +21,7 @@ class MyIFrameRenderer(IFrameRenderer):
         post_script=None,
         animation_opts=None,
         include_plotlyjs=True,
-        html_directory="iframe_figures",
+        html_directory=IFRAME_DIR,
     ):
         super().__init__(
             config,
@@ -36,8 +37,7 @@ class MyIFrameRenderer(IFrameRenderer):
         else:
             nb_path = os.path.realpath(ipynb_path.get())
         self.root_dir, nb_name = os.path.split(nb_path)
-        self.html_directory = f"{nb_name}.iframe_figures"
-        abs_html_directory = f"{nb_path}.iframe_figures"
+        abs_html_directory = os.path.join(self.root_dir, self.html_directory)
         try:
             os.makedirs(abs_html_directory)
         except OSError as error:
@@ -99,8 +99,6 @@ allowfullscreen
 
     def build_filename(self):
         self.out_fname = f"{self.html_directory}/{uuid4()}.html"
-        # logger.debug(f"{self.out_fname}")
-        # NOTE: Always make a plot at the Notebook's directory
         cwd = os.path.realpath(os.getcwd())
         rel = os.path.relpath(os.path.commonprefix([self.root_dir, cwd]), cwd)
         return f"{rel}/{self.out_fname}"

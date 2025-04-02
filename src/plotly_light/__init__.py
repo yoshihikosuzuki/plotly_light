@@ -3,7 +3,6 @@ from logzero import logger as _logger
 from . import default
 from ._bar import bar
 from ._box import box, violin
-from ._colors import colors
 from ._config import (
     set_default_colors,
     set_default_config,
@@ -13,6 +12,7 @@ from ._config import (
     update_default_config,
     update_default_layout,
 )
+from ._const import COLORS, IFRAME_DIR
 from ._crawl import _remove_unused_htmls
 from ._histogram import hist
 from ._image import image, show_image
