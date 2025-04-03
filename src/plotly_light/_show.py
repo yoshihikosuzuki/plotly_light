@@ -10,66 +10,13 @@ from ._type import Traces
 
 
 def figure(traces: Traces, layout: Optional[go.Layout] = None) -> go.Figure:
-    """Same as go.Figure(), just for compatibility.
-
-    positional arguments:
-      @ traces : A trace or list of traces.
-
-    optional arguments:
-      @ layout         : A layout object.
-    """
+    """Same as go.Figure(), just for compatibility."""
     return go.Figure(data=traces, layout=layout)
 
 
-def show(
-    traces: Union[Traces, go.Figure],
-    layout: Optional[go.Layout] = None,
-    config: Optional[Dict] = None,
-    out_image: Optional[str] = None,
-    out_html: Optional[str] = None,
-    embed_plotlyjs: bool = True,
-    return_fig: bool = False,
-) -> None:
-    """Plot a figure in Jupyter Notebook.
-
-    positional arguments:
-      @ traces : A trace, list of traces, or a Figure object.
-
-    optional arguments:
-      @ layout         : A layout object.
-      @ out_html       : HTML file name to which the plot is output.
-      @ out_image      : Image file name to which the plot is output.
-                         .[png|jpeg|svg|pdf|eps] are supported.
-      @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in `out_html`.
-      @ return_fig     : If True, return Figure object instead of drawing a plot.
-    """
-    if isinstance(traces, go.Figure):
-        fig = traces
-        if layout is not None:
-            fig.layout = pll.merge_layout(fig.layout, layout)
-    else:
-        fig = figure(traces, layout)
-
-    _config = default.config
-    if config is not None:
-        _config.update(config)
-
-    if out_image is not None:
-        fig.write_image(out_image)
-
-    if out_html is not None:
-        fig.write_html(file=out_html, config=_config, include_plotlyjs=embed_plotlyjs)
-
-    if return_fig:
-        return fig
-    else:
-        fig.show(config=_config)
-
-
-def show_mult(
+def figure_mult(
     figs: Sequence[Union[BaseTraceType, go.Figure]],
     layout: Optional[go.Layout] = None,
-    config: Optional[Dict] = None,
     n_col: int = 2,
     row_heights: Optional[Sequence[float]] = None,
     col_widths: Optional[Sequence[float]] = None,
@@ -77,30 +24,8 @@ def show_mult(
     vertical_spacing: Optional[float] = 0.2,
     shared_xaxes: Union[bool, str] = False,
     shared_yaxes: Union[bool, str] = False,
-    out_image: Optional[str] = None,
-    out_html: Optional[str] = None,
-    embed_plotlyjs: bool = True,
-    return_fig: bool = False,
-) -> None:
-    """Plot a figure with multiple subplots in Jupyter Notebook.
-
-    positional arguments:
-      @ figs : List of Trace or Figure objects. If an element is a Figure object,
-               its layout is used for that subplot.
-
-    optional arguments:
-      @ layout           : A layout object for the overall figure.
-      @ n_col            : Number of columns of plots. Number of rows is automatically determined.
-      @ [horizontal|vertical]_spacing:
-                         : Size of spaces between subplots. Must be in [0, 1].
-                           Default: horizontal = 0.1 / #cols, vertical = 0.2 / #rows.
-      @ shared_[x|y]axes : Must be boolean or one of {"columns", "rows", "all"}.
-      @ out_html         : HTML file name to which the plot is output.
-      @ out_image        : Image file name to which the plot is output.
-                           .[png|jpeg|svg|pdf|eps] are supported.
-      @ embed_plotlyjs   : If True, embed plotly.js codes (~3 MB) in `out_html`.
-      @ return_fig       : If True, return Figure object instead of drawing a plot.
-    """
+) -> go.Figure:
+    """Make a figure with multiple sub-figures."""
     N = len(figs)
     n_row = N // n_col + (0 if N % n_col == 0 else 1)
 
@@ -160,16 +85,118 @@ def show_mult(
     fig.update_layout(margin=dict(t=70, l=40))
     fig.update_layout(layout)
 
+    return fig
+
+
+def show(
+    traces: Union[Traces, go.Figure],
+    layout: Optional[go.Layout] = None,
+    out_image: Optional[str] = None,
+    config: Optional[Dict] = None,
+    embed_plotlyjs: bool = True,
+    no_plot: bool = False,
+) -> None:
+    """Plot a figure in Jupyter Notebook.
+
+    positional arguments:
+      @ traces : A trace, list of traces, or a Figure object.
+
+    optional arguments:
+      @ layout         : A layout object.
+      @ out_image      : Image/HTML file name(s) to which the plot is output.
+                         The format is:
+                           - `out.pdf` for single output
+                           - `out.{svg,pdf,html}` for multiple outputs
+                         .[png|jpeg|svg|pdf|eps|html] are supported.
+      @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in the output HTML file.
+      @ no_plot        : If True, do not draw a plot in an interactive environment.
+    """
+    if isinstance(traces, go.Figure):
+        fig = traces
+        if layout is not None:
+            fig.layout = pll.merge_layout(fig.layout, layout)
+    else:
+        fig = figure(traces, layout)
+
+    if out_image.endswith("}"):
+        # multiple output formats
+        data = out_image[:-1].split("{")
+        assert len(data) == 2, f"Invalid format: {out_image}"
+        prefix = data[0]
+        exts = data[1].split(",")
+        out_fnames = [f"{prefix}{ext}" for ext in exts]
+    else:
+        # single output formats
+        out_fnames = [out_image]
+
     _config = default.config
     if config is not None:
         _config.update(config)
 
-    if out_image is not None:
-        fig.write_image(out_image)
-    if out_html is not None:
-        fig.write_html(file=out_html, config=_config, include_plotlyjs=embed_plotlyjs)
+    for out_fname in out_fnames:
+        if out_fname.endswith(".html"):
+            fig.write_html(
+                file=out_fname, config=config, include_plotlyjs=embed_plotlyjs
+            )
+        else:
+            fig.write_image(out_fname)
 
-    if return_fig:
-        return fig
-    else:
+    if not no_plot:
         fig.show(config=_config)
+
+
+def show_mult(
+    figs: Sequence[Union[BaseTraceType, go.Figure]],
+    layout: Optional[go.Layout] = None,
+    config: Optional[Dict] = None,
+    n_col: int = 2,
+    row_heights: Optional[Sequence[float]] = None,
+    col_widths: Optional[Sequence[float]] = None,
+    horizontal_spacing: Optional[float] = 0.1,
+    vertical_spacing: Optional[float] = 0.2,
+    shared_xaxes: Union[bool, str] = False,
+    shared_yaxes: Union[bool, str] = False,
+    out_image: Optional[str] = None,
+    embed_plotlyjs: bool = True,
+    no_plot: bool = False,
+) -> None:
+    """Plot a figure with multiple subplots in Jupyter Notebook.
+
+    positional arguments:
+      @ figs : List of Trace or Figure objects. If an element is a Figure object,
+               its layout is used for that subplot.
+
+    optional arguments:
+      @ layout           : A layout object for the overall figure.
+      @ n_col            : Number of columns of plots. Number of rows is automatically determined.
+      @ [horizontal|vertical]_spacing:
+                         : Size of spaces between subplots. Must be in [0, 1].
+                           Default: horizontal = 0.1 / #cols, vertical = 0.2 / #rows.
+      @ shared_[x|y]axes : Must be boolean or one of {"columns", "rows", "all"}.
+      @ out_image        : Image/HTML file name(s) to which the plot is output.
+                           The format is:
+                             - `out.pdf` for single output
+                             - `out.{svg,pdf,html}` for multiple outputs
+                           .[png|jpeg|svg|pdf|eps|html] are supported.
+      @ embed_plotlyjs   : If True, embed plotly.js codes (~3 MB) in the output HTML file.
+      @ no_plot        : If True, do not draw a plot in an interactive environment.
+    """
+    fig = figure_mult(
+        figs,
+        layout,
+        n_col,
+        row_heights,
+        col_widths,
+        horizontal_spacing,
+        vertical_spacing,
+        shared_xaxes,
+        shared_yaxes,
+    )
+
+    show(
+        fig,
+        out_image=out_image,
+        config=config,
+        embed_plotlyjs=embed_plotlyjs,
+        no_plot=no_plot,
+    )
