@@ -33,10 +33,9 @@ class MyIFrameRenderer(IFrameRenderer):
         )
 
         if ipynb_fname is not None:
-            nb_path = os.path.realpath(ipynb_fname)
+            self.root_dir = os.path.split(os.path.realpath(ipynb_fname))[0]
         else:
-            nb_path = os.path.realpath(ipynb_path.get())
-        self.root_dir, nb_name = os.path.split(nb_path)
+            self.root_dir = os.path.realpath(os.getcwd())
         abs_html_directory = os.path.join(self.root_dir, self.html_directory)
         try:
             os.makedirs(abs_html_directory)
@@ -108,10 +107,10 @@ allowfullscreen
         return self.out_fname
 
 
-def _set_custom_iframe_renderers(ipynb_fname=None) -> None:
+def _set_custom_iframe_renderers() -> None:
     pio.renderers["iframe"] = MyIFrameRenderer(
-        ipynb_fname=ipynb_fname, config=pio._renderers.config, include_plotlyjs=True
+        config=pio._renderers.config, include_plotlyjs=True
     )
     pio.renderers["iframe_connected"] = MyIFrameRenderer(
-        ipynb_fname=ipynb_fname, config=pio._renderers.config, include_plotlyjs="cdn"
+        config=pio._renderers.config, include_plotlyjs="cdn"
     )

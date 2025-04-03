@@ -1,6 +1,8 @@
 from typing import Any, Dict, List
-import plotly.io as pio
+
 import plotly.graph_objects as go
+import plotly.io as pio
+
 from . import default
 from ._layout import merge_layout
 
@@ -10,13 +12,12 @@ def _set_default_template() -> None:
     template.
     """
     pio.templates["plotly_light"] = pio.templates.merge_templates(
-        pio.templates[default.theme],
-        go.layout.Template(layout=default.layout))
+        pio.templates[default.theme], go.layout.Template(layout=default.layout)
+    )
     pio.templates.default = default.theme = "plotly_light"
 
 
-def set_default_theme(theme_name: str,
-                      keep_layout: bool = True) -> None:
+def set_default_theme(theme_name: str, keep_layout: bool = True) -> None:
     """Change plotly's default theme.
 
     positional_arguments:
@@ -31,7 +32,7 @@ def set_default_theme(theme_name: str,
                        "none"}
 
     optional arguments:
-      @ keep_layout : If True, overwrite the theme's layout with the 
+      @ keep_layout : If True, overwrite the theme's layout with the
                              default layout set by `set_default_layout()`.
     """
     pio.templates.default = default.theme = theme_name
@@ -66,10 +67,10 @@ def set_default_config(config: Dict[Any, Any]) -> None:
     positional_arguments:
       @ config : Config keys and values.
     """
-    if pio.renderers.default == '':
+    if pio.renderers.default == "":
         # Not a GUI environment
         return
-    pio.renderers[pio.renderers.default.split('+')[0]].config = default.config = config
+    pio.renderers[pio.renderers.default.split("+")[0]].config = default.config = config
 
 
 def update_default_config(config: Dict[Any, Any]) -> None:
@@ -80,27 +81,29 @@ def update_default_config(config: Dict[Any, Any]) -> None:
     positional_arguments:
       @ config : Config keys and values.
     """
-    if pio.renderers.default == '':
+    if pio.renderers.default == "":
         # Not a GUI environment
         return
-    pio.renderers[pio.renderers.default.split('+')[0]].config.update(config)
-    default.config = pio.renderers[pio.renderers.default.split('+')[0]].config
+    pio.renderers[pio.renderers.default.split("+")[0]].config.update(config)
+    default.config = pio.renderers[pio.renderers.default.split("+")[0]].config
 
 
 def set_default_renderer(renderer_name: str) -> None:
     """Change plotly's default renderer.
 
     positional_arguments:
-      @ renderer_name : A plotly theme name like:
-                         {"plotly_mimetype",
-                          "browser",
-                          "notebook[_connected]",
-                          "iframe[_connected]"}
+      @ renderer_name : A plotly theme name:
+                          - "plotly_mimetype" (NBclassic)
+                          - "browser" (default browser)
+                          - "notebook[_connected]" (NBclassic)
+                          - "iframe[_connected]" (embed as iframe)
+                          - "jupyterlab" (JupyterLab)
+                          - "png" / "svg" / "pdf" (static image)
     """
-    if pio.renderers.default == '':
+    if pio.renderers.default == "":
         # Not a GUI environment
         return
-    config = pio.renderers[pio.renderers.default.split('+')[0]].config
+    config = pio.renderers[pio.renderers.default.split("+")[0]].config
     pio.renderers.default = default.renderer = renderer_name
     set_default_config(config)
     pio.renderers._activate_pending_renderers()

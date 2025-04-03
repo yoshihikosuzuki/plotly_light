@@ -34,22 +34,29 @@ set_default_config(default.config)
 # If imported from an IPython environment, turn on the connected notebook mode.
 # Moreover, if it is a Jupyter notebook, define and set a customized iframe renderer.
 try:
-    get_ipython()
+    env_name = get_ipython().__class__.__name__
 except NameError:
-    pass
+    _logger.info("plotly_light: not in an IPython/Jupyter environment")
 except Exception as e:
-    print(e)
+    _logger.info(f"plotly_light: failed at get_ipython()\n{e}")
 else:
-    import plotly.offline as _py
+    if env_name == "TerminalInteractiveShell":
+        _logger.info("plotly_light: in IPython terminal")
+    elif env_name == "ZMQInteractiveShell":
+        _logger.info("plotly_light: in Jupyter")
 
-    _py.init_notebook_mode(connected=True)
+        import plotly.offline as _py
 
-    try:
-        _set_custom_iframe_renderers()
-    except Exception as e:
-        print(e)
+        _py.init_notebook_mode(connected=True)
+
+        try:
+            _set_custom_iframe_renderers()
+        except Exception as e:
+            _logger.info(f"plotly_light: failed _set_custom_iframe_renderers()\n{e}")
+        else:
+            set_default_renderer("iframe_connected")
+            _remove_unused_htmls()
     else:
-        set_default_renderer("iframe_connected")
-        _remove_unused_htmls()
+        _logger.info(f"plotly_light: in unknown environment ({env_name})")
 
 _logger.info(f"pl.default.renderer = {default.renderer}")
