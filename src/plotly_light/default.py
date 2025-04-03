@@ -1,6 +1,6 @@
 import plotly.io as pio
 
-from ._colors import colors
+from ._const import colors
 
 renderer = pio.renderers.default
 theme = "simple_white"

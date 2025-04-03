@@ -3,7 +3,7 @@
 # blue, lightblue, red, yellow, green, purple are UT colors:
 # https://univtokyo.sharepoint.com/sites/utokyoportal/wiki/SiteAssets/d/utokyo_logotype,utokyo_visual_identity_guidelines/UTokyo_VI_Guidelines.pdf
 
-COLORS = {
+colors = {
     "blue": "#0b8bee",  # UT blue
     "lightblue": "#5bdeff",  # UT lightblue
     "darkblue": "#000080",  # navy
@@ -19,6 +19,12 @@ COLORS = {
     "purple": "#8f07aa",  # UT purple
     "lightpurple": "#ee82ee",  # violet
     "darkpurple": "#4e1e66",  # variation of grape
+    # below are for compatibility
+    "black": "black",
+    "white": "white",
+    "gray": "gray",
+    "lightgray": "lightgray",
+    "darkgray": "darkgray",
 }
 
 # temporary directory for storing HTML plot files

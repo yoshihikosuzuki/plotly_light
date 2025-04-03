@@ -12,7 +12,7 @@ from ._config import (
     update_default_config,
     update_default_layout,
 )
-from ._const import COLORS, IFRAME_DIR
+from ._const import IFRAME_DIR, colors
 from ._crawl import _remove_unused_htmls
 from ._histogram import hist
 from ._image import image, show_image
