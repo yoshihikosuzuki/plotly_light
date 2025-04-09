@@ -41,6 +41,8 @@ def layout(
     y_logscale: Optional[bool] = None,
     x_reversed: Optional[bool] = None,
     y_reversed: Optional[bool] = None,
+    x_axis_hide: Optional[bool] = None,
+    y_axis_hide: Optional[bool] = None,
     # axis ticks
     x_ticks: Optional[Union[str, bool]] = None,
     y_ticks: Optional[Union[str, bool]] = None,
@@ -90,6 +92,7 @@ def layout(
       @ [x|y]_grid           : Show grid on [x|y]-axis if True.
       @ [x|y]_zeroline       : Show zeroline on [x|y]-axis if True.
       @ [x|y]_reversed       : Reverse [x|y]-axis if True.
+      @ [x|y]_axis_hide      : Hide [x|y]-axis if True.
       @ [x|y]_ticks          : {"" (or False; default), "outside" (or True), "inside"}.
       @ [x|y]_dtick          : Distance between two adjacent ticks.
       @ [x|y]_ticklabel      : Show tick labels of [x|y]-axis if True.
@@ -122,6 +125,7 @@ def layout(
         font=dict(family=font, size=font_size, color=font_col),
         title=dict(text=title),
         xaxis=dict(
+            visible=not x_axis_hide,
             title=dict(
                 text=x_title, font=dict(size=x_titlefontsize), standoff=x_standoff
             ),
@@ -155,6 +159,7 @@ def layout(
             linewidth=bounding_line_width,
         ),
         yaxis=dict(
+            visible=not y_axis_hide,
             title=dict(
                 text=y_title, font=dict(size=y_titlefontsize), standoff=y_standoff
             ),

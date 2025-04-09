@@ -25,7 +25,22 @@ def figure_mult(
     shared_xaxes: Union[bool, str] = False,
     shared_yaxes: Union[bool, str] = False,
 ) -> go.Figure:
-    """Make a figure with multiple sub-figures."""
+    """Make a figure object with multiple sub-figures.
+
+    positional arguments:
+      @ figs : List of Trace or Figure objects. If an element is a Figure object,
+               its layout is used for that subplot.
+
+    optional arguments:
+      @ layout           : A layout object for the overall figure.
+      @ n_col            : Number of columns of plots. Number of rows is automatically determined.
+      @ [row_heights|col_widths]
+                         : List of relative heights/widths of each row/column.
+      @ [horizontal|vertical]_spacing
+                         : Size of spaces between subplots. Must be in [0, 1].
+                           Default: horizontal = 0.1 / #cols, vertical = 0.2 / #rows.
+      @ shared_[x|y]axes : Must be boolean or one of {"columns", "rows", "all"}.
+    """
     N = len(figs)
     n_row = N // n_col + (0 if N % n_col == 0 else 1)
 
@@ -104,13 +119,14 @@ def show(
     optional arguments:
       @ layout         : A layout object.
       @ out_image      : Image/HTML file name(s) to which the plot is output.
-                         The format is:
+                         The format is e.g.:
                            - `out.pdf` for single output
                            - `out.{svg,pdf,html}` for multiple outputs
                          .[png|jpeg|svg|pdf|eps|html] are supported.
       @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in the output HTML file.
       @ no_plot        : If True, do not draw a plot in an interactive environment.
     """
+    # Make a figure object if needed
     if isinstance(traces, go.Figure):
         fig = traces
         if layout is not None:
@@ -118,29 +134,33 @@ def show(
     else:
         fig = figure(traces, layout)
 
-    if out_image.endswith("}"):
-        # multiple output formats
-        data = out_image[:-1].split("{")
-        assert len(data) == 2, f"Invalid format: {out_image}"
-        prefix = data[0]
-        exts = data[1].split(",")
-        out_fnames = [f"{prefix}{ext}" for ext in exts]
-    else:
-        # single output formats
-        out_fnames = [out_image]
-
+    # Prep config
     _config = default.config
     if config is not None:
         _config.update(config)
 
-    for out_fname in out_fnames:
-        if out_fname.endswith(".html"):
-            fig.write_html(
-                file=out_fname, config=config, include_plotlyjs=embed_plotlyjs
-            )
+    # Output image(s)
+    if out_image is not None:
+        if out_image.endswith("}"):
+            # multiple output formats
+            data = out_image[:-1].split("{")
+            assert len(data) == 2, f"Invalid format: {out_image}"
+            prefix = data[0]
+            exts = data[1].split(",")
+            out_fnames = [f"{prefix}{ext}" for ext in exts]
         else:
-            fig.write_image(out_fname)
+            # single output formats
+            out_fnames = [out_image]
 
+        for out_fname in out_fnames:
+            if out_fname.endswith(".html"):
+                fig.write_html(
+                    file=out_fname, config=config, include_plotlyjs=embed_plotlyjs
+                )
+            else:
+                fig.write_image(out_fname)
+
+    # Show plot
     if not no_plot:
         fig.show(config=_config)
 
@@ -169,6 +189,8 @@ def show_mult(
     optional arguments:
       @ layout           : A layout object for the overall figure.
       @ n_col            : Number of columns of plots. Number of rows is automatically determined.
+      @ [row_heights|col_widths]
+                         : List of relative heights/widths of each row/column.
       @ [horizontal|vertical]_spacing:
                          : Size of spaces between subplots. Must be in [0, 1].
                            Default: horizontal = 0.1 / #cols, vertical = 0.2 / #rows.
