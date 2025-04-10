@@ -74,7 +74,7 @@ def image(
                 x_range=(xb, xe),
                 y_range=(yb, ye),
                 anchor_axes=True,
-                margin=dict(l=0, r=0, t=0, b=0),
+                margin=dict(l=5, r=5, t=5, b=5),
             ),
             layout,
         )

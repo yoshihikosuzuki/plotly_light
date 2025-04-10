@@ -3,9 +3,23 @@ import plotly.io as pio
 from ._const import colors
 
 renderer = pio.renderers.default
+
+# Base is "simple_white", but the color and some appearances are changed.
 theme = "simple_white"
 
-# Selected colors for a series of plots
+# Base size of plots and font size. For font visibility, the font size is by default set as
+# `font_size * (specified_plot_size / plot_size)` in the `layout` function.
+plot_size = 500
+font_size = 20
+grid_width = 1
+tick_len = 7
+tick_width = 1.5
+bounding_line_width = 1
+zeroline_width = 1
+legend_border_width = 1
+
+margin = {"b": 10, "l": 10, "r": 10, "t": 50}
+
 colorway = [
     colors["blue"],
     colors["yellow"],
@@ -19,8 +33,27 @@ colorway = [
     colors["purple"],
 ]
 
-# Base is "simple_white", but the color and default appearance of zerolines and ticks are changed.
+layout_axis = {
+    "automargin": True,
+    "title": {"standoff": 15},
+    "ticks": "outside",
+    "ticklen": tick_len,
+    "tickwidth": tick_width,
+    "tickcolor": "black",
+    "showgrid": False,
+    "gridcolor": "rgb(232,232,232)",
+    "gridwidth": grid_width,
+    "showline": True,
+    "linecolor": "black",
+    "linewidth": bounding_line_width,
+    "zeroline": False,
+    "zerolinecolor": "lightgray",
+    "zerolinewidth": zeroline_width,
+}
+
 layout = {
+    "width": plot_size,
+    "height": plot_size,
     "annotationdefaults": {"arrowhead": 0, "arrowwidth": 1},
     "autotypenumbers": "strict",
     "coloraxis": {
@@ -65,11 +98,19 @@ layout = {
             [1.0, "#fde725"],
         ],
     },
-    # 'colorway': ['orange', 'dodgerblue', 'sienna', 'navy', 'lightseagreen', 'mediumpurple'],
     "colorway": colorway,
-    "font": {"color": "black", "family": "Arial", "size": 16},
-    "legend": {"bordercolor": "black"},
-    "margin": {"b": 10, "l": 10, "r": 10, "t": 50},
+    "paper_bgcolor": "white",
+    "plot_bgcolor": "white",
+    "font": {"color": "black", "family": "Arial", "size": font_size},
+    "title": {"x": 0.05},
+    "legend": {"bordercolor": "black", "borderwidth": legend_border_width},
+    "shapedefaults": {"fillcolor": "black", "line": {"width": 0}, "opacity": 1},
+    "margin": margin,
+    "hovermode": "closest",
+    "hoverlabel": {"align": "left"},
+    "mapbox": {"style": "light"},
+    "xaxis": layout_axis,
+    "yaxis": layout_axis,
     "geo": {
         "bgcolor": "white",
         "lakecolor": "white",
@@ -78,11 +119,6 @@ layout = {
         "showland": True,
         "subunitcolor": "white",
     },
-    "hoverlabel": {"align": "left"},
-    "hovermode": "closest",
-    "mapbox": {"style": "light"},
-    "paper_bgcolor": "white",
-    "plot_bgcolor": "white",
     "polar": {
         "angularaxis": {
             "gridcolor": "rgb(232,232,232)",
@@ -138,7 +174,6 @@ layout = {
             "zerolinecolor": "lightgray",
         },
     },
-    "shapedefaults": {"fillcolor": "black", "line": {"width": 0}, "opacity": 0.3},
     "ternary": {
         "aaxis": {
             "gridcolor": "rgb(232,232,232)",
@@ -162,35 +197,6 @@ layout = {
             "showline": False,
             "ticks": "",
         },
-    },
-    "title": {"x": 0.05},
-    "xaxis": {
-        "automargin": True,
-        "gridcolor": "rgb(232,232,232)",
-        "linecolor": "black",
-        "showgrid": False,
-        "showline": False,
-        "ticks": "",
-        "ticklen": 7,
-        "tickwidth": 1.2,
-        "tickcolor": "black",
-        "title": {"standoff": 15},
-        "zeroline": True,
-        "zerolinecolor": "lightgray",
-    },
-    "yaxis": {
-        "automargin": True,
-        "gridcolor": "rgb(232,232,232)",
-        "linecolor": "black",
-        "showgrid": False,
-        "showline": False,
-        "ticks": "",
-        "ticklen": 7,
-        "tickwidth": 1.2,
-        "tickcolor": "black",
-        "title": {"standoff": 15},
-        "zeroline": True,
-        "zerolinecolor": "lightgray",
     },
 }
 
