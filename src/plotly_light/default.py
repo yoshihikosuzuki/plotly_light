@@ -13,7 +13,8 @@ plot_size = 500
 font_size = 20
 grid_width = 1
 tick_len = 7
-tick_width = 1.5
+tick_width = 1.2
+nticks_minor = 1
 bounding_line_width = 1
 zeroline_width = 1
 legend_border_width = 1
@@ -49,6 +50,7 @@ layout_axis = {
     "zeroline": False,
     "zerolinecolor": "lightgray",
     "zerolinewidth": zeroline_width,
+    "minor_nticks": nticks_minor + 1,
 }
 
 layout = {

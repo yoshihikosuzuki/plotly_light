@@ -9,6 +9,7 @@ def layout(
     # plot size
     width: Optional[int] = None,
     height: Optional[int] = None,
+    size: Optional[int] = None,
     # plot range
     x_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
     y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
@@ -25,7 +26,7 @@ def layout(
     y_titlefontsize: Optional[int] = None,
     xy_titlefontsize: Optional[int] = None,
     # bounding lines, zero lines, grids
-    box: bool = False,
+    box: Optional[bool] = None,
     x_grid: Optional[bool] = None,
     y_grid: Optional[bool] = None,
     xy_grid: Optional[bool] = None,
@@ -58,12 +59,15 @@ def layout(
     x_ticks: Optional[Union[str, bool]] = None,
     y_ticks: Optional[Union[str, bool]] = None,
     xy_ticks: Optional[Union[str, bool]] = None,
-    x_ticks_minor: Optional[Union[str, bool]] = None,
-    y_ticks_minor: Optional[Union[str, bool]] = None,
-    xy_ticks_minor: Optional[Union[str, bool]] = None,
     x_dtick: Optional[int] = None,
     y_dtick: Optional[int] = None,
     xy_dtick: Optional[int] = None,
+    x_ticks_minor: Optional[Union[str, bool]] = None,
+    y_ticks_minor: Optional[Union[str, bool]] = None,
+    xy_ticks_minor: Optional[Union[str, bool]] = None,
+    x_nticks_minor: Optional[int] = None,
+    y_nticks_minor: Optional[int] = None,
+    xy_nticks_minor: Optional[int] = None,
     x_ticklabel: Optional[bool] = None,
     y_ticklabel: Optional[bool] = None,
     x_tickformat: Optional[str] = None,
@@ -96,6 +100,7 @@ def layout(
     optional arguments:
       @ width                : Width of the plot.
       @ height               : Height of the plot.
+      @ size                 : Both width and height of the plot.
       @ font                 : Font of characters in the plots.
       @ font_col             : Font color of charactoers in the plots.
       @ font_size_[title|axis_title|axis_tick|legend]
@@ -136,6 +141,9 @@ def layout(
       @ barmode              : {"group" (default), "stack", "overlay", "relative"}.
       @ hovermode            : {"closest" (default), "[x|y] [unified]", False}.
     """
+    if size is not None:
+        width = size
+        height = size
     if width is None:
         width = default.plot_size
     if height is None:
@@ -157,15 +165,19 @@ def layout(
     if legend_border_width is None:
         legend_border_width = default.bounding_line_width * ratio
 
-    if box:
+    if box is not None:
         if x_bounding_line is None:
-            x_bounding_line = True
+            x_bounding_line = box
         if y_bounding_line is None:
-            y_bounding_line = True
+            y_bounding_line = box
         if x_mirror is None:
-            x_mirror = True
+            x_mirror = box
         if y_mirror is None:
-            y_mirror = True
+            y_mirror = box
+        if x_ticks is None:
+            x_ticks = box
+        if y_ticks is None:
+            y_ticks = box
 
     if xy_range is not None:
         x_range = xy_range
@@ -191,6 +203,9 @@ def layout(
     if xy_ticks_minor is not None:
         x_ticks_minor = xy_ticks_minor
         y_ticks_minor = xy_ticks_minor
+    if xy_nticks_minor is not None:
+        x_nticks_minor = xy_nticks_minor
+        y_nticks_minor = xy_nticks_minor
     if xy_dtick is not None:
         x_dtick = xy_dtick
         y_dtick = xy_dtick
@@ -219,10 +234,13 @@ def layout(
             range=x_range,
             autorange="reversed" if x_reversed is True else None,
             ticks="outside" if x_ticks is True else "" if x_ticks is False else x_ticks,
-            minor_ticks=(
-                "outside"
-                if x_ticks_minor is True
-                else "" if x_ticks_minor is False else x_ticks_minor
+            minor=dict(
+                ticks=(
+                    "outside"
+                    if x_ticks_minor is True
+                    else "" if x_ticks_minor is False else x_ticks_minor
+                ),
+                nticks=None if x_nticks_minor is None else x_nticks_minor + 1,
             ),
             dtick=x_dtick,
             showticklabels=x_ticklabel,
@@ -256,10 +274,13 @@ def layout(
             autorange="reversed" if y_reversed is True else None,
             scaleanchor="x" if anchor_axes is True else None,
             ticks="outside" if y_ticks is True else "" if y_ticks is False else y_ticks,
-            minor_ticks=(
-                "outside"
-                if y_ticks_minor is True
-                else "" if y_ticks_minor is False else y_ticks_minor
+            minor=dict(
+                ticks=(
+                    "outside"
+                    if y_ticks_minor is True
+                    else "" if y_ticks_minor is False else y_ticks_minor
+                ),
+                nticks=None if y_nticks_minor is None else y_nticks_minor + 1,
             ),
             dtick=y_dtick,
             showticklabels=y_ticklabel,
