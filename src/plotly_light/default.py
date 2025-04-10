@@ -4,6 +4,10 @@ from ._const import colors
 
 renderer = pio.renderers.default
 
+# 300 dpi for 5-inch (13cm) plot = 1500 pixels
+dpi = 300
+plot_inch = 5
+
 # Base is "simple_white", but the color and some appearances are changed.
 theme = "simple_white"
 

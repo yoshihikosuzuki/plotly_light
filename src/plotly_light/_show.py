@@ -1,3 +1,4 @@
+from math import sqrt
 from typing import Dict, Optional, Sequence, Union
 
 import plotly.graph_objects as go
@@ -139,6 +140,11 @@ def show(
     if config is not None:
         _config.update(config)
 
+    # Determine the scale of the output image`
+    scale = sqrt(
+        ((default.dpi * default.plot_inch) ** 2)
+        / (fig.layout.width * fig.layout.height)
+    )
     # Output image(s)
     if out_image is not None:
         if out_image.endswith("}"):
@@ -158,7 +164,7 @@ def show(
                     file=out_fname, config=config, include_plotlyjs=embed_plotlyjs
                 )
             else:
-                fig.write_image(out_fname)
+                fig.write_image(out_fname, scale=scale)
 
     # Show plot
     if not no_plot:
