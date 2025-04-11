@@ -54,7 +54,7 @@ else:
         except Exception as e:
             _logger.info(f"plotly_light: failed _set_custom_iframe_renderers()\n{e}")
         else:
-            set_default_renderer("iframe_connected")
+            set_default_renderer("iframe")
             _remove_unused_htmls()
     else:
         _logger.info(f"plotly_light: in unknown environment ({env_name})")

@@ -1,7 +1,6 @@
 import os
 from uuid import uuid4
 
-import ipynb_path
 import plotly.io as pio
 from plotly.io._base_renderers import IFrameRenderer
 
@@ -48,7 +47,7 @@ class MyIFrameRenderer(IFrameRenderer):
 
         # Make iframe size slightly larger than figure size to avoid
         # having iframe have its own scroll bar.
-        iframe_buffer = 20
+        iframe_buffer = 50
         layout = fig_dict.get("layout", {})
 
         if layout.get("width", False):
@@ -80,20 +79,17 @@ class MyIFrameRenderer(IFrameRenderer):
         )
 
         # Build IFrame
-        iframe_html = """\
+        iframe_html = f"""\
 <iframe
 sandbox="allow-scripts allow-downloads"
 scrolling="no"
-width="{width}"
-height="{height}"
-src="{src}"
+width="{iframe_width}"
+height="{iframe_height}"
+src="{self.build_url()}"
 frameborder="0"
 allowfullscreen
 ></iframe>
-""".format(
-            width=iframe_width, height=iframe_height, src=self.build_url()
-        )
-
+"""
         return {"text/html": iframe_html}
 
     def build_filename(self):

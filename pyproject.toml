@@ -21,7 +21,6 @@ dependencies = [
   "pandas",
   "scikit-image",
   "logzero",
-  "ipynb-path",
 ]
 description = "A wrapper of Plotly Python for lightweight plots"
 license = {file = "LICENSE"}

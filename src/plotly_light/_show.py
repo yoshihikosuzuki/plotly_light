@@ -130,6 +130,8 @@ def show(
     # Make a figure object if needed
     if isinstance(traces, go.Figure):
         fig = traces
+        if layout is None:
+            layout = pll.layout()
         if layout is not None:
             fig.layout = pll.merge_layout(fig.layout, layout)
     else:
@@ -141,6 +143,10 @@ def show(
         _config.update(config)
 
     # Determine the scale of the output image`
+    if fig.layout.width is None:
+        fig.layout.width = default.plot_size
+    if fig.layout.height is None:
+        fig.layout.height = default.plot_size
     scale = sqrt(
         ((default.dpi * default.plot_inch) ** 2)
         / (fig.layout.width * fig.layout.height)
