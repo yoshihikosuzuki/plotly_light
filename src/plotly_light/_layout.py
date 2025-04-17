@@ -7,9 +7,9 @@ from . import default
 
 def layout(
     # plot size
-    width: Optional[int] = None,
-    height: Optional[int] = None,
-    size: Optional[int] = None,
+    width: Optional[float] = None,
+    height: Optional[float] = None,
+    size: Optional[float] = None,
     # plot range
     x_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
     y_range: Optional[Tuple[Optional[float], Optional[float]]] = None,
@@ -142,28 +142,10 @@ def layout(
       @ hovermode            : {"closest" (default), "[x|y] [unified]", False}.
     """
     if size is not None:
-        width = size
-        height = size
-    if width is None:
-        width = default.plot_size
-    if height is None:
-        height = default.plot_size
-    ratio = min(width, height) / default.plot_size
-
-    if font_size is None:
-        font_size = default.font_size * ratio
-    if grid_width is None:
-        grid_width = default.grid_width * ratio
-    if tick_len is None:
-        tick_len = default.tick_len * ratio
-    if tick_width is None:
-        tick_width = default.tick_width * ratio
-    if bounding_line_width is None:
-        bounding_line_width = default.bounding_line_width * ratio
-    if zeroline_width is None:
-        zeroline_width = default.bounding_line_width * ratio
-    if legend_border_width is None:
-        legend_border_width = default.bounding_line_width * ratio
+        if width is None:
+            width = size
+        if height is None:
+            height = size
 
     if box is not None:
         if x_bounding_line is None:
@@ -324,3 +306,74 @@ def merge_layout(base_layout, *layouts) -> go.Layout:
     for _layout in layouts:
         base_layout = base_layout.update(_layout)
     return base_layout
+
+
+def autoscale_plot_font_sizes(
+    layout: Optional[go.Layout] = None,
+    by: Optional[str] = None,
+) -> None:
+    """Set font sizes and line widths of the layout to be proportional to the plot size.
+
+    Parameters
+    ----------
+    layout, optional
+        Layout object, by default None
+    by, optional, {"width", "height", "mean" (= None), "min", "max"}
+        How to scale the font size, by default None.
+    """
+    if layout.width is None:
+        layout.width = default.plot_size
+    if layout.height is None:
+        layout.height = default.plot_size
+
+    if by is None:
+        by = "mean"
+    assert by in {"width", "height", "mean", "min", "max"}, "Invalid value for 'by'."
+
+    scale = (
+        layout.width
+        if by == "width"
+        else (
+            layout.height
+            if by == "height"
+            else (
+                (layout.width + layout.height) / 2
+                if by == "mean"
+                else (
+                    min(layout.width, layout.height)
+                    if by == "min"
+                    else max(layout.width, layout.height)  # if by == "max"
+                )
+            )
+        )
+    ) / default.plot_size
+
+    if layout.font["size"] is None:
+        layout.font["size"] = min(
+            max(default.font_size * scale, default.min_font_size), default.max_font_size
+        )
+
+    if scale < 1:
+        scale = 1
+    if layout.xaxis["gridwidth"] is None:
+        layout.xaxis["gridwidth"] = default.grid_width * scale
+    if layout.yaxis["gridwidth"] is None:
+        layout.yaxis["gridwidth"] = default.grid_width * scale
+    if layout.xaxis["ticklen"] is None:
+        layout.xaxis["ticklen"] = default.tick_len * scale
+    if layout.yaxis["ticklen"] is None:
+        layout.yaxis["ticklen"] = default.tick_len * scale
+    if layout.xaxis["tickwidth"] is None:
+        layout.xaxis["tickwidth"] = default.tick_width * scale
+    if layout.yaxis["tickwidth"] is None:
+        layout.yaxis["tickwidth"] = default.tick_width * scale
+    if layout.xaxis["linewidth"] is None:
+        layout.xaxis["linewidth"] = default.bounding_line_width * scale
+    if layout.yaxis["linewidth"] is None:
+        layout.yaxis["linewidth"] = default.bounding_line_width * scale
+    if layout.xaxis["zerolinewidth"] is None:
+        layout.xaxis["zerolinewidth"] = default.zeroline_width * scale
+    if layout.yaxis["zerolinewidth"] is None:
+        layout.yaxis["zerolinewidth"] = default.zeroline_width * scale
+    if layout.legend["borderwidth"] is None:
+        layout.legend["borderwidth"] = default.legend_border_width * scale

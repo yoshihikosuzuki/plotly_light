@@ -15,6 +15,8 @@ theme = "simple_white"
 # `font_size * (specified_plot_size / plot_size)` in the `layout` function.
 plot_size = 500
 font_size = 20
+min_font_size = 16  # autoscaled font size will not be outside range of [min_fonrt_size, max_font_size]
+max_font_size = 28
 grid_width = 1
 tick_len = 7
 tick_width = 1.2

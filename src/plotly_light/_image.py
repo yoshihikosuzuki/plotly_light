@@ -14,11 +14,13 @@ def image(
     in_fname: str,
     width: Optional[int] = None,
     height: Optional[int] = None,
+    min_size: Optional[int] = 100,
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
     layer: str = "above",
     opacity: Optional[float] = None,
     layout: go.Layout = None,
+    autoscale_font_by: str = None,
     verbose: bool = False,
 ):
     img = PIL.Image.open(in_fname)
@@ -46,19 +48,19 @@ def image(
             width, height = min(width, height / ar), min(height, width * ar)
         else:
             height = width * ar
-    else:   # height is not None
+    else:  # height is not None
         width = height / ar
 
-    # if width < 10:
-    #     logger.warning(
-    #         f"Width ({width:.1f}) is too small. Setting the minimum value, 10."
-    #     )
-    #     width = 10
-    # if height < 10:
-    #     logger.warning(
-    #         f"Height ({height:.1f}) is too small. Setting the minimum value, 10."
-    #     )
-    #     height = 10
+    if width < min_size:
+        logger.warning(
+            f"Width ({width:.1f}) is too small. Setting the minimum value, {min_size}."
+        )
+        width = min_size
+    if height < min_size:
+        logger.warning(
+            f"Height ({height:.1f}) is too small. Setting the minimum value, {min_size}."
+        )
+        height = min_size
 
     if verbose:
         logger.info(
@@ -68,22 +70,21 @@ def image(
     fig = go.Figure(
         layout=pll.merge_layout(
             pll.layout(
-                width=width,
-                height=height,
-                x_range=(xb, xe),
-                y_range=(yb, ye),
                 box=False,
                 anchor_axes=True,
                 margin=dict(l=5, r=5, t=5, b=5),
             ),
             layout,
+            pll.layout(
+                width=width,
+                height=height,
+                x_range=(xb, xe),
+                y_range=(yb, ye),
+                x_ticklabel=x_range is not None,
+                y_ticklabel=y_range is not None,
+            ),
         )
     )
-    if x_range is None and y_range is None:
-        fig.update_layout(
-            xaxis=dict(showticklabels=False),
-            yaxis=dict(showticklabels=False),
-        )
     fig.add_layout_image(
         dict(
             source=img,
@@ -98,6 +99,8 @@ def image(
             opacity=opacity,
         )
     )
+    pll.autoscale_plot_font_sizes(fig.layout, by=autoscale_font_by)
+
     return fig
 
 
@@ -111,6 +114,7 @@ def show_image(
     layer: str = "above",
     opacity: Optional[float] = None,
     layout: go.Layout = None,
+    autoscale_font_by: str = None,
     return_fig: bool = False,
     verbose: bool = False,
 ) -> None:
@@ -128,7 +132,18 @@ def show_image(
         display(Image(fname, width=width, height=height))
         return
 
-    fig = image(fname, width, height, x_range, y_range, layer, opacity, layout, verbose)
+    fig = image(
+        in_fname=fname,
+        width=width,
+        height=height,
+        x_range=x_range,
+        y_range=y_range,
+        layer=layer,
+        opacity=opacity,
+        layout=layout,
+        autoscale_font_by=autoscale_font_by,
+        verbose=verbose,
+    )
 
     if return_fig:
         return fig

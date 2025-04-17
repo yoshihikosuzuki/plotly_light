@@ -10,9 +10,14 @@ from . import default
 from ._type import Traces
 
 
-def figure(traces: Traces, layout: Optional[go.Layout] = None) -> go.Figure:
-    """Same as go.Figure(), just for compatibility."""
-    return go.Figure(data=traces, layout=layout)
+def figure(
+    traces: Optional[Traces] = None,
+    layout: Optional[go.Layout] = None,
+    autoscale_font_by: str = None,
+) -> go.Figure:
+    fig = go.Figure(data=traces, layout=layout)
+    pll.autoscale_plot_font_sizes(fig.layout, by=autoscale_font_by)
+    return fig
 
 
 def figure_mult(
@@ -25,6 +30,7 @@ def figure_mult(
     vertical_spacing: Optional[float] = 0.2,
     shared_xaxes: Union[bool, str] = False,
     shared_yaxes: Union[bool, str] = False,
+    autoscale_font_by: str = None,
 ) -> go.Figure:
     """Make a figure object with multiple sub-figures.
 
@@ -98,18 +104,21 @@ def figure_mult(
                         )
                     )
                 )
-    fig.update_layout(margin=dict(t=70, l=40))
+    # fig.update_layout(margin=dict(t=70, l=40))
     fig.update_layout(layout)
+    pll.autoscale_plot_font_sizes(fig.layout, by=autoscale_font_by)
 
     return fig
 
 
 def show(
-    traces: Union[Traces, go.Figure],
+    traces: Optional[Union[Traces, go.Figure]] = None,
     layout: Optional[go.Layout] = None,
+    autoscale_font_by: str = None,
     out_image: Optional[str] = None,
     config: Optional[Dict] = None,
     embed_plotlyjs: bool = True,
+    return_fig: bool = False,
     no_plot: bool = False,
 ) -> None:
     """Plot a figure in Jupyter Notebook.
@@ -127,43 +136,36 @@ def show(
       @ embed_plotlyjs : If True, embed plotly.js codes (~3 MB) in the output HTML file.
       @ no_plot        : If True, do not draw a plot in an interactive environment.
     """
-    # Make a figure object if needed
-    if isinstance(traces, go.Figure):
-        fig = traces
-        if layout is None:
-            layout = pll.layout()
-        if layout is not None:
-            fig.layout = pll.merge_layout(fig.layout, layout)
-    else:
-        fig = figure(traces, layout)
+    fig = (
+        traces
+        if isinstance(traces, go.Figure)
+        else figure(traces, layout, autoscale_font_by)
+    )
 
     # Prep config
     _config = default.config
     if config is not None:
         _config.update(config)
 
-    # Determine the scale of the output image`
-    if fig.layout.width is None:
-        fig.layout.width = default.plot_size
-    if fig.layout.height is None:
-        fig.layout.height = default.plot_size
-    scale = sqrt(
-        ((default.dpi * default.plot_inch) ** 2)
-        / (fig.layout.width * fig.layout.height)
-    )
     # Output image(s)
     if out_image is not None:
-        if out_image.endswith("}"):
-            # multiple output formats
+        if out_image.endswith("}"):  # multiple output formats
             data = out_image[:-1].split("{")
             assert len(data) == 2, f"Invalid format: {out_image}"
             prefix = data[0]
             exts = data[1].split(",")
             out_fnames = [f"{prefix}{ext}" for ext in exts]
-        else:
-            # single output formats
+        else:  # single output formats
             out_fnames = [out_image]
 
+        # scale factor to achieve the default dpi for the size of plot_inch
+        assert (
+            fig.layout.width is not None and fig.layout.height is not None
+        ), "width and height must be set to output images"
+        scale = sqrt(
+            ((default.dpi * default.plot_inch) ** 2)
+            / (fig.layout.width * fig.layout.height)
+        )
         for out_fname in out_fnames:
             if out_fname.endswith(".html"):
                 fig.write_html(
@@ -172,7 +174,9 @@ def show(
             else:
                 fig.write_image(out_fname, scale=scale)
 
-    # Show plot
+    if return_fig:
+        return fig
+
     if not no_plot:
         fig.show(config=_config)
 
@@ -188,6 +192,7 @@ def show_mult(
     vertical_spacing: Optional[float] = 0.2,
     shared_xaxes: Union[bool, str] = False,
     shared_yaxes: Union[bool, str] = False,
+    autoscale_font_by: str = None,
     out_image: Optional[str] = None,
     embed_plotlyjs: bool = True,
     no_plot: bool = False,
@@ -217,14 +222,15 @@ def show_mult(
     """
     fig = figure_mult(
         figs,
-        layout,
-        n_col,
-        row_heights,
-        col_widths,
-        horizontal_spacing,
-        vertical_spacing,
-        shared_xaxes,
-        shared_yaxes,
+        layout=layout,
+        n_col=n_col,
+        row_heights=row_heights,
+        col_widths=col_widths,
+        horizontal_spacing=horizontal_spacing,
+        vertical_spacing=vertical_spacing,
+        shared_xaxes=shared_xaxes,
+        shared_yaxes=shared_yaxes,
+        autoscale_font_by=autoscale_font_by,
     )
 
     show(
