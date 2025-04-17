@@ -5,7 +5,9 @@ import plotly.graph_objects as go
 from IPython.display import Image, display
 from logzero import logger
 
-from . import _layout, _show
+from . import _layout as pll
+from . import default
+from ._show import show
 
 
 def image(
@@ -37,16 +39,15 @@ def image(
             xb, xe = 0, iw
             yb, ye = 0, ih
 
+    if width is None and height is None:
+        width, height = default.plot_size, default.plot_size
     if width is not None:
         if height is not None:
             width, height = min(width, height / ar), min(height, width * ar)
         else:
             height = width * ar
-    else:
-        if height is not None:
-            width = height / ar
-        else:
-            width, height = iw, ih
+    else:   # height is not None
+        width = height / ar
 
     # if width < 10:
     #     logger.warning(
@@ -65,14 +66,13 @@ def image(
         )
 
     fig = go.Figure(
-        layout=_layout.merge_layout(
-            _layout.layout(
+        layout=pll.merge_layout(
+            pll.layout(
                 width=width,
                 height=height,
-                x_zeroline=False,
-                y_zeroline=False,
                 x_range=(xb, xe),
                 y_range=(yb, ye),
+                box=False,
                 anchor_axes=True,
                 margin=dict(l=5, r=5, t=5, b=5),
             ),
@@ -133,4 +133,4 @@ def show_image(
     if return_fig:
         return fig
 
-    _show.show(fig)
+    show(fig)
