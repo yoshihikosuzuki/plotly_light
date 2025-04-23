@@ -16,6 +16,8 @@ def scatter(
     marker_size: float = 5,
     marker_width: int = None,
     line_width: float = 1,
+    fill: Optional[str] = None,
+    fill_col: Optional[str] = None,
     col: Optional[Union[str, Sequence[Union[int, str]]]] = None,
     col_range: Tuple[Optional[float], Optional[float]] = (None, None),
     col_scale: Optional[str] = None,
@@ -51,6 +53,9 @@ def scatter(
       @ marker_size     : For "markers" mode.
       @ marker_width    : For "markers" mode.
       @ line_width      : For "lines" mode.
+      @ fill            : Fill mode. Must be one of {"none", "tozeroy", "tonexty"}.
+      @ fill_col        : Fill color. To specify transparency, use "rgba()".
+                          This is used only when `fill` is not "none".
       @ col             : Color of markers and lines.
       @ col_range       : Value range for color scale.
       @ col_scale       : Color scale for markers and lines.
@@ -123,6 +128,8 @@ def scatter(
             )
         ),
         line=(None if mode == "markers" else dict(width=line_width, color=col)),
+        fill=fill,
+        fillcolor=fill_col,
         showlegend=show_legend,
         visible=None if show_init else "legendonly",
     )

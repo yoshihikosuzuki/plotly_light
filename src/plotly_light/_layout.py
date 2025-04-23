@@ -375,5 +375,5 @@ def autoscale_plot_font_sizes(
         layout.xaxis["zerolinewidth"] = default.zeroline_width * scale
     if layout.yaxis["zerolinewidth"] is None:
         layout.yaxis["zerolinewidth"] = default.zeroline_width * scale
-    if layout.legend["borderwidth"] is None:
+    if layout.legend["borderwidth"] is not None:
         layout.legend["borderwidth"] = default.legend_border_width * scale

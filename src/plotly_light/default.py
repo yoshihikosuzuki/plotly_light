@@ -111,7 +111,7 @@ layout = {
     "plot_bgcolor": "white",
     "font": {"color": "black", "family": "Arial", "size": font_size},
     "title": {"x": 0.05},
-    "legend": {"bordercolor": "black", "borderwidth": legend_border_width},
+    "legend": {"bordercolor": "black"},
     "shapedefaults": {"fillcolor": "black", "line": {"width": 0}, "opacity": 1},
     "margin": margin,
     "hovermode": "closest",

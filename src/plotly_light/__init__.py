@@ -18,7 +18,7 @@ from ._histogram import hist
 from ._image import image, show_image
 from ._layout import layout, merge_layout
 from ._line import lines, lines_shape
-from ._rectangle import rect
+from ._rectangle import closures, rects, rects_shape
 from ._renderer import _set_custom_iframe_renderers
 from ._scatter import scatter
 from ._show import figure, show, show_mult
