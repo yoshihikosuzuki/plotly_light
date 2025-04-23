@@ -117,7 +117,7 @@ def show(
     autoscale_font_by: str = None,
     out_image: Optional[str] = None,
     config: Optional[Dict] = None,
-    embed_plotlyjs: bool = True,
+    embed_plotlyjs: bool = False,
     return_fig: bool = False,
     no_plot: bool = False,
 ) -> None:
@@ -194,7 +194,7 @@ def show_mult(
     shared_yaxes: Union[bool, str] = False,
     autoscale_font_by: str = None,
     out_image: Optional[str] = None,
-    embed_plotlyjs: bool = True,
+    embed_plotlyjs: bool = False,
     no_plot: bool = False,
 ) -> None:
     """Plot a figure with multiple subplots in Jupyter Notebook.
