@@ -10,9 +10,9 @@ authors = [
   {name = "Yoshihiko Suzuki", email = "yoshi.suzuki.1992@gmail.com"},
 ]
 dependencies = [
-  "plotly >= 6",
+  "plotly >= 5",
   "kaleido",
-  "notebook >= 6",
+  "notebook >= 6, <7",
   "anywidget >= 0.8",
   "numpy",
   "matplotlib",
