@@ -195,6 +195,7 @@ def show_mult(
     autoscale_font_by: str = None,
     out_image: Optional[str] = None,
     embed_plotlyjs: bool = False,
+    return_fig: bool = False,
     no_plot: bool = False,
 ) -> None:
     """Plot a figure with multiple subplots in Jupyter Notebook.
@@ -233,10 +234,21 @@ def show_mult(
         autoscale_font_by=autoscale_font_by,
     )
 
-    show(
-        fig,
-        out_image=out_image,
-        config=config,
-        embed_plotlyjs=embed_plotlyjs,
-        no_plot=no_plot,
-    )
+    if return_fig:
+        return show(
+            fig,
+            out_image=out_image,
+            config=config,
+            embed_plotlyjs=embed_plotlyjs,
+            return_fig=return_fig,
+            no_plot=no_plot,
+        )
+    else:
+        show(
+            fig,
+            out_image=out_image,
+            config=config,
+            embed_plotlyjs=embed_plotlyjs,
+            return_fig=return_fig,
+            no_plot=no_plot,
+        )

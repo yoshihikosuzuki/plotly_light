@@ -69,19 +69,22 @@ def image(
 
     fig = go.Figure(
         layout=pll.merge_layout(
+            # default layout options with the lowest priority
             pll.layout(
                 box=False,
                 anchor_axes=True,
+                x_ticklabel=x_range is not None,
+                y_ticklabel=y_range is not None,
                 margin=dict(l=5, r=5, t=5, b=5),
             ),
+            # user-defined layout options with middle priority
             layout,
+            # default layout options with highest priority
             pll.layout(
                 width=width,
                 height=height,
                 x_range=(xb, xe),
                 y_range=(yb, ye),
-                x_ticklabel=x_range is not None,
-                y_ticklabel=y_range is not None,
             ),
         )
     )

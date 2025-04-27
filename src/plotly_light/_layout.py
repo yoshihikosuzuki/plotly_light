@@ -62,6 +62,9 @@ def layout(
     x_dtick: Optional[int] = None,
     y_dtick: Optional[int] = None,
     xy_dtick: Optional[int] = None,
+    x_ticks_opposite: Optional[bool] = None,
+    y_ticks_opposite: Optional[bool] = None,
+    xy_ticks_opposite: Optional[bool] = None,
     x_ticks_minor: Optional[Union[str, bool]] = None,
     y_ticks_minor: Optional[Union[str, bool]] = None,
     xy_ticks_minor: Optional[Union[str, bool]] = None,
@@ -182,6 +185,9 @@ def layout(
     if xy_ticks is not None:
         x_ticks = xy_ticks
         y_ticks = xy_ticks
+    if xy_ticks_opposite is not None:
+        x_ticks_opposite = xy_ticks_opposite
+        y_ticks_opposite = xy_ticks_opposite
     if xy_ticks_minor is not None:
         x_ticks_minor = xy_ticks_minor
         y_ticks_minor = xy_ticks_minor
@@ -216,6 +222,8 @@ def layout(
             range=x_range,
             autorange="reversed" if x_reversed is True else None,
             ticks="outside" if x_ticks is True else "" if x_ticks is False else x_ticks,
+            side="top" if x_ticks_opposite is True else None,
+            ticklabelposition="outside top" if x_ticks_opposite is True else None,
             minor=dict(
                 ticks=(
                     "outside"
@@ -256,6 +264,8 @@ def layout(
             autorange="reversed" if y_reversed is True else None,
             scaleanchor="x" if anchor_axes is True else None,
             ticks="outside" if y_ticks is True else "" if y_ticks is False else y_ticks,
+            side="right" if y_ticks_opposite is True else None,
+            ticklabelposition="outside right" if y_ticks_opposite is True else None,
             minor=dict(
                 ticks=(
                     "outside"
