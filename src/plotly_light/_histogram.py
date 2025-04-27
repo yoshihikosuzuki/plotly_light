@@ -25,6 +25,7 @@ def hist(
     bin_size: Optional[int] = None,
     bin_num: int = 10,
     relative: bool = False,
+    horizontal_plot: bool = False,
     col: Optional[str] = None,
     opacity: float = 1,
     use_lines: bool = False,
@@ -65,7 +66,11 @@ def hist(
     def _to_trace(x, y) -> Union[go.Bar, go.Scatter]:
         if use_lines:
             return lines(
-                [(_x, 0, _x, _y) for _x, _y in zip(x, y)],
+                (
+                    [(_x, 0, _x, _y) for _x, _y in zip(x, y)]
+                    if not horizontal_plot
+                    else [(0, _x, _y, _x) for _x, _y in zip(x, y)]
+                ),
                 text=text,
                 width=line_width,
                 col=col,
@@ -77,8 +82,9 @@ def hist(
             )
         else:
             return bar(
-                x=x,
-                y=y,
+                x=x if not horizontal_plot else y,
+                y=y if not horizontal_plot else x,
+                horizontal_plot=horizontal_plot,
                 text=text,
                 col=col,
                 opacity=opacity,
@@ -95,8 +101,16 @@ def hist(
             data, Sequence
         ), "Only Sequence objects are supported if `use_histogram`."
         return go.Histogram(
-            x=data,
-            xbins=dict(start=start, end=end, size=bin_size),
+            x=data if not horizontal_plot else None,
+            y=data if horizontal_plot else None,
+            xbins=(
+                dict(start=start, end=end, size=bin_size)
+                if not horizontal_plot
+                else None
+            ),
+            ybins=(
+                dict(start=start, end=end, size=bin_size) if horizontal_plot else None
+            ),
             histnorm="percent" if relative else "",
             marker=dict(color=col),
             opacity=opacity,
