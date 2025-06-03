@@ -25,7 +25,7 @@ bounding_line_width = 1
 zeroline_width = 1
 legend_border_width = 1
 
-margin = {"b": 10, "l": 10, "r": 10, "t": 50}
+margin = {"b": 10, "l": 10, "r": 10, "t": 100}
 
 colorway = [
     colors["blue"],
