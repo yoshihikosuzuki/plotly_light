@@ -15,6 +15,7 @@ def image(
     width: Optional[int] = None,
     height: Optional[int] = None,
     min_size: Optional[int] = 100,
+    axis_label_size: Optional[int] = 100,
     x_range: Optional[Tuple[int, int]] = None,
     y_range: Optional[Tuple[int, int]] = None,
     layer: str = "above",
@@ -42,14 +43,21 @@ def image(
             yb, ye = 0, ih
 
     if width is None and height is None:
-        width, height = default.plot_size, default.plot_size
+        width = default.plot_size - axis_label_size
+        height = default.plot_size - axis_label_size
     if width is not None:
+        width -= axis_label_size
         if height is not None:
+            height -= axis_label_size
             width, height = min(width, height / ar), min(height, width * ar)
         else:
             height = width * ar
     else:  # height is not None
+        height -= axis_label_size
         width = height / ar
+
+    width += axis_label_size
+    height += axis_label_size
 
     if width < min_size:
         logger.warning(
@@ -71,6 +79,8 @@ def image(
         layout=pll.merge_layout(
             # default layout options with the lowest priority
             pll.layout(
+                width=width,
+                height=height,
                 box=False,
                 anchor_axes=True,
                 x_ticklabel=x_range is not None,
@@ -81,13 +91,16 @@ def image(
             layout,
             # default layout options with highest priority
             pll.layout(
-                width=width,
-                height=height,
                 x_range=(xb, xe),
                 y_range=(yb, ye),
             ),
         )
     )
+
+    # Force to plot only the domain specified by `x_range` and `y_range`
+    fig.update_xaxes(constrain='domain')
+    fig.update_yaxes(constrain='domain')
+    
     fig.add_layout_image(
         dict(
             source=img,
@@ -96,7 +109,7 @@ def image(
             x=xb,
             y=ye,
             sizex=xe - xb,
-            sizey=ye - yb,
+            sizey=yb - ye,
             sizing="stretch",
             layer=layer,
             opacity=opacity,
